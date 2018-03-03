@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.fragments.FragmentProfile;
+import ba.sum.sum.fragments.FragmentStudij;
+import ba.sum.sum.utils.Tools;
 
 public class TabsScroll extends AppCompatActivity {
 
@@ -36,8 +38,9 @@ public class TabsScroll extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Scroll");
+        getSupportActionBar().setTitle("Ekonomski fakultet");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Tools.setSystemBarColor(this, R.color.colorPrimaryDark);
     }
 
     private void initComponent() {
@@ -51,7 +54,7 @@ public class TabsScroll extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(FragmentProfile.newInstance(), "O nama");
-        adapter.addFragment(FragmentProfile.newInstance(), "Studiji");
+        adapter.addFragment(FragmentStudij.newInstance(), "Studiji");
         adapter.addFragment(FragmentProfile.newInstance(), "Dokumenti");
         viewPager.setAdapter(adapter);
     }

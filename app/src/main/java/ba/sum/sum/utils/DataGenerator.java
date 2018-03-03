@@ -13,6 +13,7 @@ import java.util.Random;
 
 import ba.sum.sum.R;
 import ba.sum.sum.models.People;
+import ba.sum.sum.models.Social;
 
 @SuppressWarnings("ResourceType")
 public class DataGenerator {
@@ -61,6 +62,28 @@ public class DataGenerator {
             dateFormat = new SimpleDateFormat("MMM yyyy", Locale.US);
         }
         return dateFormat.format(time);
+    }
+
+    /**
+     * Generate dummy data social
+     *
+     * @param ctx android context
+     * @return list of object
+     */
+    public static List<Social> getSocialData(Context ctx) {
+        List<Social> items = new ArrayList<>();
+        TypedArray drw_arr = ctx.getResources().obtainTypedArray(R.array.social_images);
+        String name_arr[] = ctx.getResources().getStringArray(R.array.social_names);
+
+        for (int i = 0; i < drw_arr.length(); i++) {
+            Social obj = new Social();
+            obj.image = drw_arr.getResourceId(i, -1);
+            obj.name = name_arr[i];
+            obj.imageDrw = ctx.getResources().getDrawable(obj.image);
+            items.add(obj);
+        }
+        Collections.shuffle(items);
+        return items;
     }
 
 }
