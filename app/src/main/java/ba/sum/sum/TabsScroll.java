@@ -8,14 +8,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.sum.sum.fragments.FragmentProfile;
+import ba.sum.sum.fragments.FragmentOnama;
 import ba.sum.sum.fragments.FragmentStudij;
 import ba.sum.sum.utils.Tools;
 
@@ -38,7 +37,7 @@ public class TabsScroll extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Ekonomski fakultet");
+        getSupportActionBar().setTitle("FPMOZ");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.colorPrimaryDark);
     }
@@ -53,9 +52,9 @@ public class TabsScroll extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(FragmentProfile.newInstance(), "O nama");
+        adapter.addFragment(FragmentOnama.newInstance(), "O nama");
         adapter.addFragment(FragmentStudij.newInstance(), "Studiji");
-        adapter.addFragment(FragmentProfile.newInstance(), "Dokumenti");
+        adapter.addFragment(FragmentOnama.newInstance(), "Dokumenti");
         viewPager.setAdapter(adapter);
     }
 

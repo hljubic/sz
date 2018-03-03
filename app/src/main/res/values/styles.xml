@@ -40,4 +40,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Button.White.Primary" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@android:color/white</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

@@ -128,7 +128,6 @@ public class IntroActivity extends AppCompatActivity {
                 btnNext.setText("Next");
             }
 
-
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

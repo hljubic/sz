@@ -21,11 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.R;
-import ba.sum.sum.SliderImageHeaderAuto;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.utils.Tools;
 
-public class FragmentProfile extends Fragment {
+public class FragmentOnama extends Fragment {
 
     private View parent_view;
     private ViewPager viewPager;
@@ -35,32 +34,32 @@ public class FragmentProfile extends Fragment {
     private Handler handler = new Handler();
 
     private static int[] array_image_place = {
-            R.drawable.image_12,
+            R.drawable.fpmoz_zgrada,
             R.drawable.image_13,
             R.drawable.image_14,
             R.drawable.image_15,
     };
 
     private static String[] array_title_place = {
-            "Dui fringilla ornare finibus, orci odio",
+            "Fakultet prirodoslovno matematičkih i odgojnih znanosti",
             "Mauris sagittis non elit quis fermentum",
             "Mauris ultricies augue sit amet est sollicitudin",
             "Suspendisse ornare est ac auctor pulvinar",
     };
 
     private static String[] array_brief_place = {
-            "Foggy Hill",
+            "Kampus Mostar",
             "The Backpacker",
             "River Forest",
             "Mist Mountain",
     };
 
 
-    public FragmentProfile() {
+    public FragmentOnama() {
     }
 
-    public static FragmentProfile newInstance() {
-        FragmentProfile fragment = new FragmentProfile();
+    public static FragmentOnama newInstance() {
+        FragmentOnama fragment = new FragmentOnama();
         return fragment;
     }
 

@@ -82,7 +82,30 @@ public class DataGenerator {
             obj.imageDrw = ctx.getResources().getDrawable(obj.image);
             items.add(obj);
         }
-        Collections.shuffle(items);
+        // Collections.shuffle(items);
+        return items;
+    }
+
+
+    /**
+     * Generate dummy data social
+     *
+     * @param ctx android context
+     * @return list of object
+     */
+    public static List<Social> getSocialData2(Context ctx) {
+        List<Social> items = new ArrayList<>();
+        TypedArray drw_arr = ctx.getResources().obtainTypedArray(R.array.social_images);
+        String name_arr[] = ctx.getResources().getStringArray(R.array.social_names);
+
+        for (int i = 0; i < drw_arr.length(); i++) {
+            Social obj = new Social();
+            obj.image = drw_arr.getResourceId(i, -1);
+            obj.name = name_arr[i];
+            obj.imageDrw = ctx.getResources().getDrawable(obj.image);
+            items.add(obj);
+        }
+        // Collections.shuffle(items);
         return items;
     }
 

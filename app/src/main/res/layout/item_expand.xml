@@ -64,8 +64,24 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_large"
-            android:text="@string/lorem_ipsum" />
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="U novije vrijeme razvoj informatičkih tehnologija sve više utječe na društvo u cjelini, npr. ekonomiju, medicinu i druge znanosti. U studiju informatike se stručni sadržaji realiziraju kroz obvezne i izborne kolegije. Dopunjuju se metodičkim i pedagoško-psihološkim sadržajima. " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="Opširnije"
+                android:theme="@style/Button.White.Primary" />
+        </LinearLayout>
 
     </LinearLayout>
 
