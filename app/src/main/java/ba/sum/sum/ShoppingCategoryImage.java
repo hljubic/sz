@@ -21,7 +21,7 @@ public class ShoppingCategoryImage extends AppCompatActivity {
 
     private View parent_view;
 
-    @Override
+    @Overridea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_category_image);
