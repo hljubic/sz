@@ -194,47 +194,27 @@
         <item>@drawable/ic_accessibility</item>
         <item>@drawable/ic_face</item>
         <item>@drawable/ic_child_friendly</item>
-        <item>@drawable/ic_weekend</item>
-
-        <item>@drawable/ic_pool</item>
-        <item>@drawable/ic_confirmation_number</item>
-        <item>@drawable/ic_restaurant</item>
     </integer-array>
 
     <integer-array name="shop_category_bg">
-        <item>@drawable/image_4</item>
-        <item>@drawable/image_19</item>
-        <item>@drawable/image_20</item>
-        <item>@drawable/image_21</item>
-        <item>@drawable/image_8</item>
-
-        <item>@drawable/image_22</item>
-        <item>@drawable/image_23</item>
-        <item>@drawable/image_24</item>
+        <item>@drawable/agronomski_1</item>
+        <item>@drawable/akademija_zgrada_0</item>
+        <item>@drawable/ekonomski</item>
+        <item>@drawable/fsr</item>
     </integer-array>
 
     <string-array name="shop_category_title">
-        <item>Gadgets and Computers</item>
-        <item>Fashion</item>
-        <item>Beauty and Health</item>
-        <item>Babies and Kids</item>
-        <item>Home and Garden</item>
-
-        <item>Sports and Hobby</item>
-        <item>Ticket and Voucher</item>
-        <item>Service and Food</item>
+        <item>Agronomski i prehrambeno tehnološki fakultet</item>
+        <item>Akademija likovnih umjetnosti</item>
+        <item>Ekonomski fakultet</item>
+        <item>Fakultet strojarstva, računarstva i elektrotehnike</item>
     </string-array>
 
     <string-array name="shop_category_brief">
-        <item>100k Items</item>
-        <item>655k Items</item>
-        <item>221k Items</item>
-        <item>85k Items</item>
-        <item>725k Items</item>
-
-        <item>932k Items</item>
-        <item>475k Items</item>
-        <item>362k Items</item>
+        <item>Više</item>
+        <item>Više</item>
+        <item>Više</item>
+        <item>Više</item>
     </string-array>
 
     <!--shopping product data-->
