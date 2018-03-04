@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="New Releases"
+                android:text="Istaknuto"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
             <Button
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minWidth="0dp"
-                android:text="MORE"
+                android:text="VIŠE"
                 android:textColor="@color/grey_60" />
 
         </LinearLayout>
@@ -63,6 +63,7 @@
                         android:id="@+id/image_1"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
+                        android:src="@drawable/zagreb"
                         android:background="@color/grey_40"
                         android:scaleType="centerCrop" />
 
@@ -84,14 +85,14 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="Mauris sagittis non elit"
-                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:text="Predsjednik HAZU akademik Zvonko Kusić primio rektora Sveučilišta u Mostaru prof. dr. Zorana Tomića"
+                                android:textAppearance="@style/TextAppearance.Subhead.Bold"
                                 android:textColor="@color/grey_90" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Kodaline" />
+                                android:text="Zagreb" />
 
                         </LinearLayout>
 
@@ -124,6 +125,7 @@
                         android:id="@+id/image_2"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
+                        android:src="@drawable/fsre"
                         android:background="@color/grey_40"
                         android:scaleType="centerCrop" />
 
@@ -145,14 +147,14 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:text="Aliquam"
-                                android:textAppearance="@style/TextAppearance.Medium.Bold"
+                                android:text="Otvoren Sajam zapošljavanja za studente i diplomante tehničkih struka"
+                                android:textAppearance="@style/TextAppearance.Subhead.Bold"
                                 android:textColor="@color/grey_90" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="One Republic" />
+                                android:text="FSRE" />
 
                         </LinearLayout>
 
@@ -182,7 +184,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Recommended"
+                android:text="Novosti"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
             <Button
@@ -191,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minWidth="0dp"
-                android:text="MORE"
+                android:text="VIŠE"
                 android:textColor="@color/grey_60" />
 
         </LinearLayout>
@@ -220,6 +222,7 @@
                         android:id="@+id/image_3"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
+                        android:src="@drawable/sum_1"
                         android:background="@color/grey_40"
                         android:scaleType="centerCrop" />
 
@@ -253,6 +256,7 @@
                         android:id="@+id/image_4"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
+                        android:src="@drawable/sum_3"
                         android:background="@color/grey_40"
                         android:scaleType="centerCrop" />
 
@@ -286,6 +290,7 @@
                         android:id="@+id/image_5"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
+                        android:src="@drawable/sum_2"
                         android:background="@color/grey_40"
                         android:scaleType="centerCrop" />
 

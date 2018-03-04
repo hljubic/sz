@@ -3,8 +3,14 @@ package ba.sum.sum;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +20,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.adapters.AdapterListShopCategoryImg;
+import ba.sum.sum.fragments.FragmentFakultet;
 import ba.sum.sum.models.ShopCategory;
 import ba.sum.sum.utils.DataGenerator;
 
@@ -53,16 +63,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initComponent() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setNestedScrollingEnabled(false);
+        ViewPager view_pager = (ViewPager) findViewById(R.id.view_pager);
+        setupViewPager(view_pager);
 
-        List<ShopCategory> items = DataGenerator.getShoppingCategory(this);
+        TabLayout tab_layout = (TabLayout) findViewById(R.id.tab_layout);
+        tab_layout.setupWithViewPager(view_pager);
+    }
 
-        //set data and list adapter
-        AdapterListShopCategoryImg mAdapter = new AdapterListShopCategoryImg(this, items);
-        recyclerView.setAdapter(mAdapter);
+    private void setupViewPager(ViewPager viewPager) {
+        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(FragmentFakultet.newInstance(), "Naslovnica");
+        adapter.addFragment(PlaceholderFragment.newInstance(2), "Novosti");
+        adapter.addFragment(PlaceholderFragment.newInstance(3), "Društvene mreže");
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -118,5 +131,56 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static class PlaceholderFragment extends Fragment {
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_tabs_store, container, false);
+            return rootView;
+        }
+    }
+
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public SectionsPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
