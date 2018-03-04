@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="fragment_animation_duration">250</integer>
+
+    <!-- Field lenght-->
+
+    <fraction name="fragment_animation_fraction_positive">40%</fraction>
+    <fraction name="fragment_animation_fraction_negative">-40%</fraction>
+
+</resources>
