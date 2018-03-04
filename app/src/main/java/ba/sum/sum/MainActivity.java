@@ -3,6 +3,8 @@ package ba.sum.sum;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.List;
+
+import ba.sum.sum.adapters.AdapterListShopCategoryImg;
+import ba.sum.sum.models.ShopCategory;
+import ba.sum.sum.utils.DataGenerator;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +48,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        initComponent();
+    }
+
+    private void initComponent() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        List<ShopCategory> items = DataGenerator.getShoppingCategory(this);
+
+        //set data and list adapter
+        AdapterListShopCategoryImg mAdapter = new AdapterListShopCategoryImg(this, items);
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override

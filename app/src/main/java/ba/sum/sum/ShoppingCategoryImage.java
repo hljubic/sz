@@ -21,9 +21,6 @@ public class ShoppingCategoryImage extends AppCompatActivity {
 
     private View parent_view;
 
-    private RecyclerView recyclerView;
-    private AdapterListShopCategoryImg mAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +40,7 @@ public class ShoppingCategoryImage extends AppCompatActivity {
     }
 
     private void initComponent() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
@@ -51,7 +48,7 @@ public class ShoppingCategoryImage extends AppCompatActivity {
         List<ShopCategory> items = DataGenerator.getShoppingCategory(this);
 
         //set data and list adapter
-        mAdapter = new AdapterListShopCategoryImg(this, items);
+        AdapterListShopCategoryImg mAdapter = new AdapterListShopCategoryImg(this, items);
         recyclerView.setAdapter(mAdapter);
 
         // on item list clicked

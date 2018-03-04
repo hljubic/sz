@@ -114,7 +114,7 @@ public class SliderImageHeaderAuto extends AppCompatActivity {
             }
         });
 
-        startAutoSlider(adapterImageSlider.getCount());
+        // startAutoSlider(adapterImageSlider.getCount());
     }
 
     private void addBottomDots(LinearLayout layout_dots, int size, int current) {
