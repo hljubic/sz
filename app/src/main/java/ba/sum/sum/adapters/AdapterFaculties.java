@@ -9,45 +9,48 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import ba.sum.sum.utils.Constants;
 import ba.sum.sum.R;
-import ba.sum.sum.models.Category;
+import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.ItemAnimation;
 
 public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Category> items = new ArrayList<>();
+    private List<Institution> items = new ArrayList<>();
 
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, Category obj, int position);
+        void onItemClick(View view, Institution institution, int position);
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public AdapterFaculties(Context context, List<Category> items) {
+    public AdapterFaculties(Context context, List<Institution> items) {
         this.items = items;
-        ctx = context;
+        this.ctx = context;
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image_bg;
-        public TextView title;
-        public Button brief;
-        public View lyt_parent;
+        ImageView image_bg;
+        TextView title;
+        Button brief;
+        View lyt_parent;
 
         public OriginalViewHolder(View v) {
             super(v);
-            image_bg = (ImageView) v.findViewById(R.id.image_bg);
-            title = (TextView) v.findViewById(R.id.title);
-            brief = (Button) v.findViewById(R.id.brief);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image_bg = v.findViewById(R.id.image_bg);
+            title = v.findViewById(R.id.title);
+            brief = v.findViewById(R.id.brief);
+            lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }
 
@@ -62,24 +65,26 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof OriginalViewHolder) {
-            OriginalViewHolder view = (OriginalViewHolder) holder;
+        OriginalViewHolder view = (OriginalViewHolder) holder;
 
-            Category p = items.get(position);
-            view.title.setText(p.title);
-            view.brief.setText(p.brief);
-            view.image_bg.setImageResource(p.image_bg);
-            view.lyt_parent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(view, items.get(position), position);
-                    }
+        Institution institution = items.get(position);
+
+        view.title.setText(institution.getName());
+        view.brief.setText(institution.getWeb());
+
+        Glide.with(ctx).load(Constants.BASE_URL + "slika/" + institution.getLogo()).into(view.image_bg);
+        view.lyt_parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Ovo omogućava da pristupite click listeneru iz activitya ili fragmenta
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(view, items.get(position), position);
                 }
-            });
+            }
+        });
 
-            setAnimation(view.itemView, position);
-        }
+        setAnimation(view.itemView, position);
+
     }
 
     @Override

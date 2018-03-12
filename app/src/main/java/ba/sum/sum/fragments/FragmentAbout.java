@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 
@@ -32,35 +33,42 @@ public class FragmentAbout extends Fragment {
     private AdapterImageSlider adapterImageSlider;
     private Runnable runnable = null;
     private Handler handler = new Handler();
+    private TextView content;
 
     private static int[] array_image_place = {
             R.drawable.fpmoz_zgrada,
-            R.drawable.image_13,
-            R.drawable.image_14,
-            R.drawable.image_15,
     };
 
     private static String[] array_title_place = {
             "Fakultet prirodoslovno matematičkih i odgojnih znanosti",
-            "Mauris sagittis non elit quis fermentum",
-            "Mauris ultricies augue sit amet est sollicitudin",
-            "Suspendisse ornare est ac auctor pulvinar",
     };
 
     private static String[] array_brief_place = {
             "Kampus Mostar",
-            "The Backpacker",
-            "River Forest",
-            "Mist Mountain",
     };
 
-    public static FragmentAbout newInstance() {
-        return new FragmentAbout();
+    private static final String ARG_INSTITUTION_ID = "institution_id";
+    private static final String ARG_INSTITUTION_NAME = "institution_name";
+
+    public FragmentAbout() {
+    }
+
+    public static FragmentAbout newInstance(int institutionId, String institutionName) {
+        FragmentAbout fragment = new FragmentAbout();
+        Bundle args = new Bundle();
+        args.putInt(ARG_INSTITUTION_ID, institutionId);
+        args.putString(ARG_INSTITUTION_NAME, institutionName);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
+
+        String name = getArguments().getString(ARG_INSTITUTION_NAME);
+
+        Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
 
         initComponent(root);
 
@@ -68,8 +76,12 @@ public class FragmentAbout extends Fragment {
     }
 
     private void initComponent(final View root) {
-        layout_dots = (LinearLayout) root.findViewById(R.id.layout_dots);
-        viewPager = (ViewPager) root.findViewById(R.id.pager);
+        content = root.findViewById(R.id.tv_content);
+        // TODO: Postaviti sadržaj o studiju
+        // content.setText(...);
+
+        layout_dots = root.findViewById(R.id.layout_dots);
+        viewPager = root.findViewById(R.id.pager);
         adapterImageSlider = new AdapterImageSlider(getActivity(), new ArrayList<Image>());
 
         final List<Image> items = new ArrayList<>();
@@ -201,14 +213,14 @@ public class FragmentAbout extends Fragment {
                 }
             });
 
-            ((ViewPager) container).addView(v);
+            container.addView(v);
 
             return v;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewPager) container).removeView((RelativeLayout) object);
+            container.removeView((RelativeLayout) object);
 
         }
 
