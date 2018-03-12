@@ -24,6 +24,7 @@ public class Institution extends JsonTable<Institution> {
 
     private List<String> images;
     private List<Institution> children;
+    public boolean expanded;
 
     public Institution() {
     }

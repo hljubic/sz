@@ -13,6 +13,7 @@ import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterExpand;
+import ba.sum.sum.models.Institution;
 import ba.sum.sum.models.Social;
 import ba.sum.sum.utils.DataGenerator;
 import ba.sum.sum.utils.LineItemDecoration;
@@ -38,8 +39,8 @@ public class FragmentExpand extends Fragment {
         recyclerView.addItemDecoration(new LineItemDecoration(getActivity(), LinearLayout.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        List<Social> items = DataGenerator.getSocialData(getActivity());
-
+        Institution institution= Institution.findById(Institution.class, getActivity().getIntent().getExtras().getString("institution_id"));
+        List<Institution> items = institution.getChildren();
         //set data and list adapter
         AdapterExpand mAdapter = new AdapterExpand(getActivity(), items);
         recyclerView.setAdapter(mAdapter);
@@ -47,7 +48,7 @@ public class FragmentExpand extends Fragment {
         // on item list clicked
         mAdapter.setOnItemClickListener(new AdapterExpand.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, Social obj, int position) {
+            public void onItemClick(View view, Institution obj, int position) {
                 // Snackbar.make(parent_view, "Item " + obj.name + " clicked", Snackbar.LENGTH_SHORT).show();
             }
         });

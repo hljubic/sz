@@ -13,27 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.R;
-import ba.sum.sum.models.Social;
+import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.Tools;
 import ba.sum.sum.utils.ViewAnimation;
 
 public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Social> items = new ArrayList<>();
+    private List<Institution> items = new ArrayList<>();
 
 
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, Social obj, int position);
+        void onItemClick(View view, Institution obj, int position);
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public AdapterExpand(Context context, List<Social> items) {
+    public AdapterExpand(Context context, List<Institution> items) {
         this.items = items;
         ctx = context;
     }
@@ -69,9 +69,9 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (holder instanceof OriginalViewHolder) {
             final OriginalViewHolder view = (OriginalViewHolder) holder;
 
-            final Social p = items.get(position);
-            view.name.setText(p.name);
-            Tools.displayImageOriginal(ctx, view.image, p.image);
+            final Institution institution = items.get(position);
+            view.name.setText(institution.name);
+            //Tools.displayImageOriginal(ctx, view.image, institution.image);
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -84,19 +84,19 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             view.bt_expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean show = toggleLayoutExpand(!p.expanded, v, view.lyt_expand);
+                    boolean show = toggleLayoutExpand(!institution.expanded, v, view.lyt_expand);
                     items.get(position).expanded = show;
                 }
             });
 
 
             // void recycling view
-            if(p.expanded){
+            if(institution.expanded){
                 view.lyt_expand.setVisibility(View.VISIBLE);
             } else {
                 view.lyt_expand.setVisibility(View.GONE);
             }
-            Tools.toggleArrow(p.expanded, view.bt_expand, false);
+            Tools.toggleArrow(institution.expanded, view.bt_expand, false);
         }
     }
 

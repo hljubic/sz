@@ -22,14 +22,19 @@ import ba.sum.sum.fragments.FragmentAbout;
 import ba.sum.sum.fragments.FragmentExpand;
 import ba.sum.sum.fragments.FragmentFaculties;
 import ba.sum.sum.fragments.FragmentNews;
+import ba.sum.sum.models.Institution;
 
 public class DetailsActivity extends AppCompatActivity {
+
+    private Institution institution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String name = getIntent().getExtras().getString("institution_name", "");
+        String id = getIntent().getExtras().getString("institution_id", "");
+        institution = Institution.findById(Institution.class, id);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(name);
@@ -48,9 +53,12 @@ public class DetailsActivity extends AppCompatActivity {
 
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
         adapter.addFragment(FragmentAbout.newInstance(id, name), "O nama");
-        adapter.addFragment(FragmentExpand.newInstance(), "Studiji");
+        if (institution.getInstitutionId() == 1)
+            adapter.addFragment(FragmentExpand.newInstance(), "Studiji");
         adapter.addFragment(FragmentExpand.newInstance(), "Dokumenti");
         viewPager.setAdapter(adapter);
+
+
     }
 
     @Override
