@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.models.Image;
+import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.Tools;
 
 public class FragmentAbout extends Fragment {
@@ -33,30 +39,23 @@ public class FragmentAbout extends Fragment {
     private AdapterImageSlider adapterImageSlider;
     private Runnable runnable = null;
     private Handler handler = new Handler();
-    private TextView content;
 
-    private static int[] array_image_place = {
-            R.drawable.fpmoz_zgrada,
-    };
-
-    private static String[] array_title_place = {
-            "Fakultet prirodoslovno matematičkih i odgojnih znanosti",
-    };
-
-    private static String[] array_brief_place = {
-            "Kampus Mostar",
-    };
+    private static String[] array_image_place;
+    private static String[] array_title_place;
+    private static String[] array_subtitle_place;
 
     private static final String ARG_INSTITUTION_ID = "institution_id";
     private static final String ARG_INSTITUTION_NAME = "institution_name";
 
+    private Institution institution;
+
     public FragmentAbout() {
     }
 
-    public static FragmentAbout newInstance(int institutionId, String institutionName) {
+    public static FragmentAbout newInstance(String institutionId, String institutionName) {
         FragmentAbout fragment = new FragmentAbout();
         Bundle args = new Bundle();
-        args.putInt(ARG_INSTITUTION_ID, institutionId);
+        args.putString(ARG_INSTITUTION_ID, institutionId);
         args.putString(ARG_INSTITUTION_NAME, institutionName);
         fragment.setArguments(args);
         return fragment;
@@ -65,6 +64,9 @@ public class FragmentAbout extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
+
+        institution = Institution.findById(Institution.class, String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
+        Log.wtf("aaaaaaa", new Gson().toJson(institution.getChildren()));
 
         String name = getArguments().getString(ARG_INSTITUTION_NAME);
 
@@ -76,9 +78,12 @@ public class FragmentAbout extends Fragment {
     }
 
     private void initComponent(final View root) {
-        content = root.findViewById(R.id.tv_content);
-        // TODO: Postaviti sadržaj o studiju
-        // content.setText(...);
+        HtmlTextView content = root.findViewById(R.id.tv_content);
+        content.setHtml(institution.getContent());
+
+        array_image_place = new String[]{institution.getLogo()};
+        array_title_place = new String[]{institution.getName()};
+        array_subtitle_place = new String[]{institution.getAddress()};
 
         layout_dots = root.findViewById(R.id.layout_dots);
         viewPager = root.findViewById(R.id.pager);
@@ -88,9 +93,8 @@ public class FragmentAbout extends Fragment {
         for (int i = 0; i < array_image_place.length; i++) {
             Image obj = new Image();
             obj.image = array_image_place[i];
-            obj.imageDrw = getResources().getDrawable(obj.image);
             obj.name = array_title_place[i];
-            obj.brief = array_brief_place[i];
+            obj.brief = array_subtitle_place[i];
             items.add(obj);
         }
 
@@ -202,8 +206,9 @@ public class FragmentAbout extends Fragment {
             View v = inflater.inflate(R.layout.item_about_image, container, false);
 
             ImageView image = (ImageView) v.findViewById(R.id.image);
-            MaterialRippleLayout lyt_parent = (MaterialRippleLayout) v.findViewById(R.id.lyt_parent);
-            Tools.displayImageOriginal(act, image, o.image);
+            Glide.with(container.getContext()).load(o.image).into(image);
+
+            MaterialRippleLayout lyt_parent = v.findViewById(R.id.lyt_parent);
             lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {

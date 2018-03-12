@@ -76,6 +76,8 @@ public class FragmentFaculties extends Fragment {
                 institutions.clear();
                 institutions.addAll(list);
 
+                Institution.saveAllAsync(Institution.class, institutions);
+
                 mAdapter.notifyDataSetChanged();
 
             }
@@ -83,6 +85,11 @@ public class FragmentFaculties extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getActivity(), R.string.cant_connect, Toast.LENGTH_LONG).show();
+
+                institutions.clear();
+                institutions.addAll(Institution.listAll(Institution.class));
+
+                mAdapter.notifyDataSetChanged();
             }
         });
 

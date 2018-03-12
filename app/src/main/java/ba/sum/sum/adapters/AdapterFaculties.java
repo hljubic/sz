@@ -72,7 +72,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
         view.title.setText(institution.getName());
         view.brief.setText(institution.getWeb());
 
-        Glide.with(ctx).load(Constants.BASE_URL + "slika/" + institution.getLogo()).into(view.image_bg);
+        Glide.with(ctx).load(institution.getLogo()).into(view.image_bg);
         view.lyt_parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

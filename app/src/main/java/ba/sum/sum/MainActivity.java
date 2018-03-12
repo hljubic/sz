@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ba.hljubic.jsonorm.JsonOrm;
 import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentFaculties;
 import ba.sum.sum.fragments.FragmentNews;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+        JsonOrm.with(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {

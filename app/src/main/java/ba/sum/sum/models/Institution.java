@@ -2,13 +2,16 @@ package ba.sum.sum.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
+import ba.hljubic.jsonorm.JsonTable;
+import ba.sum.sum.utils.Constants;
+
 /**
  * Created by HP_PC on 8.3.2018..
  */
 
-public class Institution {
-
-    private int id;
+public class Institution extends JsonTable<Institution> {
     public String name;
     private String logo;
     private String address;
@@ -19,15 +22,10 @@ public class Institution {
     @SerializedName("institution_id")
     private int institutionId;
 
+    private List<String> images;
+    private List<Institution> children;
+
     public Institution() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -39,7 +37,7 @@ public class Institution {
     }
 
     public String getLogo() {
-        return logo;
+        return Constants.BASE_URL + "slika/" + logo;
     }
 
     public void setLogo(String logo) {
@@ -92,5 +90,21 @@ public class Institution {
 
     public void setInstitutionId(int institutionId) {
         this.institutionId = institutionId;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public List<Institution> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Institution> children) {
+        this.children = children;
     }
 }

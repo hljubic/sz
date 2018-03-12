@@ -43,7 +43,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        int id = getIntent().getExtras().getInt("institution_id", 0);
+        String id = getIntent().getExtras().getString("institution_id", "-------");
         String name = getIntent().getExtras().getString("institution_name", "");
 
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
