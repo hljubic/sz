@@ -9,18 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.android.volley.toolbox.StringRequest;
+
 import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterExpand;
-import ba.sum.sum.models.Social;
-import ba.sum.sum.utils.DataGenerator;
+import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.LineItemDecoration;
 
 public class FragmentExpand extends Fragment {
 
-    public static FragmentExpand newInstance() {
-        return new FragmentExpand();
+    public static final String ARG_STUDIES = "arg_studies";
+
+    public static FragmentExpand newInstance(boolean useStudies) {
+        FragmentExpand fragment = new FragmentExpand();
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_STUDIES, useStudies);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -38,16 +45,26 @@ public class FragmentExpand extends Fragment {
         recyclerView.addItemDecoration(new LineItemDecoration(getActivity(), LinearLayout.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        List<Social> items = DataGenerator.getSocialData(getActivity());
+        Institution institution = Institution.findById(Institution.class, getActivity().getIntent().getExtras().getString("institution_id"));
+        List<Institution> items = institution.getChildren();
+        List<Institution> documents = institution.getDocuments();
 
         //set data and list adapter
-        AdapterExpand mAdapter = new AdapterExpand(getActivity(), items);
+        AdapterExpand mAdapter;
+
+        if (getArguments().getBoolean(ARG_STUDIES)) {
+
+            mAdapter = new AdapterExpand(getActivity(), items);
+        } else {
+            mAdapter = new AdapterExpand(getActivity(), documents);
+
+        }
         recyclerView.setAdapter(mAdapter);
 
         // on item list clicked
         mAdapter.setOnItemClickListener(new AdapterExpand.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, Social obj, int position) {
+            public void onItemClick(View view, Institution obj, int position) {
                 // Snackbar.make(parent_view, "Item " + obj.name + " clicked", Snackbar.LENGTH_SHORT).show();
             }
         });

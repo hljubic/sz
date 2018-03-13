@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+import ba.hljubic.jsonorm.JsonTable;
 import ba.sum.sum.utils.Constants;
 import ba.sum.sum.DetailsActivity;
 import ba.sum.sum.R;
@@ -67,16 +68,22 @@ public class FragmentFaculties extends Fragment {
             }
         });
 
-        StringRequest sastavniceRequest = new StringRequest(Request.Method.GET, Constants.BASE_URL + "sastavnice/fakulteti", new Response.Listener<String>() {
+        StringRequest sastavniceRequest = new StringRequest(Request.Method.GET, Constants.BASE_URL + "sastavnice/vazne", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Institution> list = gson.fromJson(response, new TypeToken<List<Institution>>() {
                 }.getType());
 
-                institutions.clear();
-                institutions.addAll(list);
+                Institution.saveAllAsync(Institution.class, list);
 
-                Institution.saveAllAsync(Institution.class, institutions);
+                institutions.clear();
+
+                for (Institution institution : list) {
+                    // Toast.makeText(getActivity(), institution.getInstitutionId() + "---", Toast.LENGTH_SHORT).show();
+                    if (institution.getInstitutionId() == 1) {
+                        institutions.add(institution);
+                    }
+                }
 
                 mAdapter.notifyDataSetChanged();
 

@@ -66,7 +66,6 @@ public class FragmentAbout extends Fragment {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
 
         institution = Institution.findById(Institution.class, String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
-        Log.wtf("aaaaaaa", new Gson().toJson(institution.getChildren()));
 
         String name = getArguments().getString(ARG_INSTITUTION_NAME);
 

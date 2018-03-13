@@ -1,10 +1,9 @@
 package ba.sum.sum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +21,7 @@ import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentFaculties;
 import ba.sum.sum.fragments.FragmentNews;
 import ba.sum.sum.fragments.FragmentWebView;
+import ba.sum.sum.models.Institution;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -98,16 +98,34 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        //otvara sveuciliste
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+            intent.putExtra("institution_id", "1");
+            intent.putExtra("institution_name", "Sveučilište u Mostaru");
+            startActivity(intent);
+            //otvori studentski zbor
         } else if (id == R.id.nav_gallery) {
-
+            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+            intent.putExtra("institution_id", "2");
+            intent.putExtra("institution_name", "Studentski zbor");
+            startActivity(intent);
+            //otvara studentski centar
         } else if (id == R.id.nav_manage) {
-
+            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+            intent.putExtra("institution_id", "3");
+            intent.putExtra("institution_name", "Studentski Centar");
+            startActivity(intent);
+            // otvara studentski servis
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+            //intent.putExtra("institution_id", "4");
+            intent.putExtra("institution_name", "Studentski Servis");
+            startActivity(intent);
 
         } else if (id == R.id.nav_send) {
+
+        }else if (id == R.id.nav_service) {
 
         }
 
@@ -115,4 +133,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
