@@ -19,7 +19,8 @@ import ba.sum.sum.utils.ViewAnimation;
 
 public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Institution> items = new ArrayList<>();
+    private List<Institution> items;
+    private List<Institution> documents;
 
 
     private Context ctx;
@@ -36,6 +37,11 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public AdapterExpand(Context context, List<Institution> items) {
         this.items = items;
         ctx = context;
+    }
+
+    public AdapterExpand(List<Institution> documents, Context ctx) {
+        this.documents = documents;
+        this.ctx = ctx;
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
@@ -68,35 +74,68 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof OriginalViewHolder) {
             final OriginalViewHolder view = (OriginalViewHolder) holder;
-
-            final Institution institution = items.get(position);
-            view.name.setText(institution.name);
-            //Tools.displayImageOriginal(ctx, view.image, institution.image);
-            view.lyt_parent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(view, items.get(position), position);
+            if (documents != null){
+                final Institution institution = documents.get(position);
+                view.name.setText(institution.name);
+                //Tools.displayImageOriginal(ctx, view.image, institution.image);
+                view.lyt_parent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mOnItemClickListener != null) {
+                            mOnItemClickListener.onItemClick(view, documents.get(position), position);
+                        }
                     }
+                });
+
+                view.bt_expand.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean show = toggleLayoutExpand(!institution.expanded, v, view.lyt_expand);
+                        documents.get(position).expanded = show;
+                    }
+                });
+
+
+                // void recycling view
+                if (institution.expanded) {
+                    view.lyt_expand.setVisibility(View.VISIBLE);
+                } else {
+                    view.lyt_expand.setVisibility(View.GONE);
                 }
-            });
+                Tools.toggleArrow(institution.expanded, view.bt_expand, false);
 
-            view.bt_expand.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean show = toggleLayoutExpand(!institution.expanded, v, view.lyt_expand);
-                    items.get(position).expanded = show;
+            } else if(items != null) {
+
+
+                final Institution institution = items.get(position);
+                view.name.setText(institution.name);
+                //Tools.displayImageOriginal(ctx, view.image, institution.image);
+                view.lyt_parent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mOnItemClickListener != null) {
+                            mOnItemClickListener.onItemClick(view, items.get(position), position);
+                        }
+                    }
+                });
+
+                view.bt_expand.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean show = toggleLayoutExpand(!institution.expanded, v, view.lyt_expand);
+                        items.get(position).expanded = show;
+                    }
+                });
+
+
+                // void recycling view
+                if (institution.expanded) {
+                    view.lyt_expand.setVisibility(View.VISIBLE);
+                } else {
+                    view.lyt_expand.setVisibility(View.GONE);
                 }
-            });
-
-
-            // void recycling view
-            if(institution.expanded){
-                view.lyt_expand.setVisibility(View.VISIBLE);
-            } else {
-                view.lyt_expand.setVisibility(View.GONE);
+                Tools.toggleArrow(institution.expanded, view.bt_expand, false);
             }
-            Tools.toggleArrow(institution.expanded, view.bt_expand, false);
         }
     }
 

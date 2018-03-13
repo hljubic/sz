@@ -1,27 +1,16 @@
 package ba.sum.sum;
 
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.google.gson.Gson;
 
 import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentAbout;
 import ba.sum.sum.fragments.FragmentExpand;
-import ba.sum.sum.fragments.FragmentFaculties;
-import ba.sum.sum.fragments.FragmentNews;
 import ba.sum.sum.models.Institution;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -54,8 +43,8 @@ public class DetailsActivity extends AppCompatActivity {
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
         adapter.addFragment(FragmentAbout.newInstance(id, name), "O nama");
         if (institution.getInstitutionId() == 1)
-            adapter.addFragment(FragmentExpand.newInstance(), "Studiji");
-        adapter.addFragment(FragmentExpand.newInstance(), "Dokumenti");
+            adapter.addFragment(FragmentExpand.newInstance(true), "Studiji");
+        adapter.addFragment(FragmentExpand.newInstance(false), "Dokumenti");
         viewPager.setAdapter(adapter);
 
 
