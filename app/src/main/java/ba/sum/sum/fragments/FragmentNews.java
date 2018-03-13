@@ -14,9 +14,6 @@ import ba.sum.sum.R;
 public class FragmentNews extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    public FragmentNews() {
-    }
-
     public static FragmentNews newInstance(int sectionNumber) {
         FragmentNews fragment = new FragmentNews();
         Bundle args = new Bundle();
