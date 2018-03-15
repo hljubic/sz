@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("institution_name", "Studentski Centar");
             startActivity(intent);
             // otvara studentski servis
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_service) {
             Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
-            //intent.putExtra("institution_id", "4");
+            intent.putExtra("institution_id", "4");
             intent.putExtra("institution_name", "Studentski Servis");
             startActivity(intent);
 

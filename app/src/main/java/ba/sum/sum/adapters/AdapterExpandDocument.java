@@ -1,10 +1,7 @@
 package ba.sum.sum.adapters;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
@@ -22,36 +19,36 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-import ba.sum.sum.DetailsActivity;
-import ba.sum.sum.IntroActivity;
 import ba.sum.sum.R;
+import ba.sum.sum.models.Document;
 import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 import ba.sum.sum.utils.ViewAnimation;
 
-public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Institution> items;
+/**
+ * Created by Darko on 15.3.2018..
+ */
+
+public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<Document> documents;
     private Context ctx;
-    private OnItemClickListener mOnItemClickListener;
+    private AdapterExpandDocument.OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, Institution obj, int position);
+        void onItemClick(View view, Document obj, int position);
     }
 
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+    public void setOnItemClickListener(final AdapterExpandDocument.OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public AdapterExpand(Context context, List<Institution> items) {
-        this.items = items;
-        ctx = context;
+    public AdapterExpandDocument(Context ctx, List<Document> documents) {
+        this.documents = documents;
+        this.ctx = ctx;
     }
-
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
@@ -84,6 +81,7 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             return String.valueOf(Html.fromHtml(html));
         }
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
@@ -95,33 +93,31 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof OriginalViewHolder) {
-            final OriginalViewHolder view = (OriginalViewHolder) holder;
+        if (holder instanceof AdapterExpandDocument.OriginalViewHolder) {
+            final AdapterExpandDocument.OriginalViewHolder view = (AdapterExpandDocument.OriginalViewHolder) holder;
 
 
-            final Institution institution = items.get(position);
-            view.name.setText(institution.name);
-
-            String desc = stripHtml(institution.getContent());
-            if (desc.length() > 200){
+            final Document document = documents.get(position);
+            view.name.setText(document.getTitle());
+            String desc = stripHtml(document.getDescription());
+            if (desc.length() > 200) {
                 desc = desc.substring(0, 200) + "...";
             }
             view.description.setText(desc);
-            // view.description.toString().substring(0,25);
+
             ColorGenerator generator = ColorGenerator.DEFAULT;
-            final int color = generator.getRandomColor();
-            String firstChar = institution.name != null && institution.name.length() > 0 ? institution.name.substring(0, 1) : " ";
+            int color = generator.getRandomColor();
+            String firstChar = document.getTitle() != null && document.getTitle().length() > 0 ? document.getTitle().substring(0, 1) : " ";
             TextDrawable drawable = TextDrawable.builder()
                     .buildRound(firstChar, color);
             view.image.setImageDrawable(drawable);
 
-            // view.description.getText().toString().substring(0,20);
+
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(view, items.get(position), position);
-
+                        mOnItemClickListener.onItemClick(view, documents.get(position), position);
                     }
                 }
             });
@@ -129,29 +125,30 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             view.bt_expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean show = toggleLayoutExpand(!institution.expanded, v, view.lyt_expand);
-                    items.get(position).expanded = show;
+                    boolean show = toggleLayoutExpand(!document.expanded, v, view.lyt_expand);
+                    documents.get(position).expanded = show;
                 }
             });
+            view.opsirnije.setText("Preuzmi");
             view.opsirnije.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(ctx, "Kliknuli ste na opširnije", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ctx, "Kliknuli ste na preuzimanje", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(Constants.BASE_URL + "slika/" + documents.get(position).getFile()));
+                    ctx.startActivity(i);
 
-                    Intent intent = new Intent(ctx, DetailsActivity.class);
-                    intent.putExtra("institution_id", institution.getId());
-                    ctx.startActivity(intent);
                 }
             });
 
 
             // void recycling view
-            if (institution.expanded) {
+            if (document.expanded) {
                 view.lyt_expand.setVisibility(View.VISIBLE);
             } else {
                 view.lyt_expand.setVisibility(View.GONE);
             }
-            Tools.toggleArrow(institution.expanded, view.bt_expand, false);
+            Tools.toggleArrow(document.expanded, view.bt_expand, false);
         }
     }
 
@@ -169,7 +166,7 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return documents.size();
     }
 
 }

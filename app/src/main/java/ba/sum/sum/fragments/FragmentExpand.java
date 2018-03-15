@@ -4,17 +4,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.StringRequest;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterExpand;
+import ba.sum.sum.adapters.AdapterExpandDocument;
+import ba.sum.sum.models.Document;
 import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.LineItemDecoration;
 
@@ -34,6 +40,7 @@ public class FragmentExpand extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_expand, container, false);
 
+
         initComponent(root);
 
         return root;
@@ -47,26 +54,16 @@ public class FragmentExpand extends Fragment {
 
         Institution institution = Institution.findById(Institution.class, getActivity().getIntent().getExtras().getString("institution_id"));
         List<Institution> items = institution.getChildren();
-        List<Institution> documents = institution.getDocuments();
-
-        //set data and list adapter
-        AdapterExpand mAdapter;
+        List<Document> documents = institution.getDocuments();
 
         if (getArguments().getBoolean(ARG_STUDIES)) {
+            AdapterExpand mAdapter = new AdapterExpand(getActivity(), items);
+            recyclerView.setAdapter(mAdapter);
 
-            mAdapter = new AdapterExpand(getActivity(), items);
         } else {
-            mAdapter = new AdapterExpand(getActivity(), documents);
-
+            AdapterExpandDocument mAdapterDocument = new AdapterExpandDocument(getActivity(), documents);
+            recyclerView.setAdapter(mAdapterDocument);
         }
-        recyclerView.setAdapter(mAdapter);
 
-        // on item list clicked
-        mAdapter.setOnItemClickListener(new AdapterExpand.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, Institution obj, int position) {
-                // Snackbar.make(parent_view, "Item " + obj.name + " clicked", Snackbar.LENGTH_SHORT).show();
-            }
-        });
     }
 }

@@ -24,7 +24,7 @@ public class Institution extends JsonTable<Institution> {
 
     private List<String> images;
     private List<Institution> children;
-    private List<Institution> documents;
+    private List<Document> documents;
     public boolean expanded;
 
     public Institution() {
@@ -78,9 +78,7 @@ public class Institution extends JsonTable<Institution> {
         this.type = type;
     }
 
-    public String getContent() {
-        return content;
-    }
+    public String getContent() {return content;}
 
     public void setContent(String content) {
         this.content = content;
@@ -110,7 +108,21 @@ public class Institution extends JsonTable<Institution> {
         this.children = children;
     }
 
-    public List<Institution> getDocuments() {return documents;}
+    public List<Document> getDocuments() {
+        return documents;
+    }
 
-    public void setDocuments(List<Institution> documents) {this.documents = documents;}
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
+    @Override
+    public void save() {
+        super.save();
+
+        for (Institution i :
+                children) {
+            i.save();
+        }
+    }
 }
