@@ -20,13 +20,16 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        String name = getIntent().getExtras().getString("institution_name", "");
+        setContentView(R.layout.app_bar_main);
+
+        if (getIntent().getExtras() == null)
+            return;
+
         String id = getIntent().getExtras().getString("institution_id", "");
-        institution = Institution.findById(Institution.class, id);
+        institution = Institution.findParentOrChildById(id);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(name);
+        toolbar.setTitle(institution.getName());
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -37,17 +40,20 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        String id = getIntent().getExtras().getString("institution_id", "-------");
-        String name = getIntent().getExtras().getString("institution_name", "");
 
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
-        adapter.addFragment(FragmentAbout.newInstance(id, name), "O nama");
-        if (institution.getInstitutionId() == 1)
+
+        adapter.addFragment(FragmentAbout.newInstance(institution.getId()), "O nama");
+
+        if (institution.getInstitutionId() == 1 && institution.getChildren().size() > 0) {
             adapter.addFragment(FragmentExpand.newInstance(true), "Studiji");
-        adapter.addFragment(FragmentExpand.newInstance(false), "Dokumenti");
+        }
+
+        if (institution.getDocuments() != null && institution.getDocuments().size() > 0) {
+            adapter.addFragment(FragmentExpand.newInstance(false), "Dokumenti");
+        }
+
         viewPager.setAdapter(adapter);
-
-
     }
 
     @Override

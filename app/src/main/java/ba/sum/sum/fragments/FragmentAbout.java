@@ -40,23 +40,17 @@ public class FragmentAbout extends Fragment {
     private Runnable runnable = null;
     private Handler handler = new Handler();
 
-    private static String[] array_image_place;
-    private static String[] array_title_place;
-    private static String[] array_subtitle_place;
-
     private static final String ARG_INSTITUTION_ID = "institution_id";
-    private static final String ARG_INSTITUTION_NAME = "institution_name";
 
     private Institution institution;
 
     public FragmentAbout() {
     }
 
-    public static FragmentAbout newInstance(String institutionId, String institutionName) {
+    public static FragmentAbout newInstance(String institutionId) {
         FragmentAbout fragment = new FragmentAbout();
         Bundle args = new Bundle();
         args.putString(ARG_INSTITUTION_ID, institutionId);
-        args.putString(ARG_INSTITUTION_NAME, institutionName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,11 +59,7 @@ public class FragmentAbout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
 
-        institution = Institution.findById(Institution.class, String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
-
-        String name = getArguments().getString(ARG_INSTITUTION_NAME);
-
-        Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
+        institution = Institution.findParentOrChildById(String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
 
         initComponent(root);
 
@@ -80,9 +70,9 @@ public class FragmentAbout extends Fragment {
         HtmlTextView content = root.findViewById(R.id.tv_content);
         content.setHtml(institution.getContent());
 
-        array_image_place = new String[]{institution.getLogo()};
-        array_title_place = new String[]{institution.getName()};
-        array_subtitle_place = new String[]{institution.getAddress()};
+        String[] array_image_place = new String[]{institution.getLogo()};
+        String[] array_title_place = new String[]{institution.getName()};
+        String[] array_subtitle_place = new String[]{institution.getAddress()};
 
         layout_dots = root.findViewById(R.id.layout_dots);
         viewPager = root.findViewById(R.id.pager);
