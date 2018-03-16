@@ -49,9 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
             adapter.addFragment(FragmentExpand.newInstance(true), "Studiji");
         }
 
-        if (institution.getDocuments() != null && institution.getDocuments().size() > 0) {
-            adapter.addFragment(FragmentExpand.newInstance(false), "Dokumenti");
-        }
+        adapter.addFragment(FragmentExpand.newInstance(false), "Dokumenti");
 
         viewPager.setAdapter(adapter);
     }

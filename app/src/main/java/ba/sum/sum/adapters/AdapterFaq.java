@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -57,7 +56,6 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     if (mOnItemClickListener != null) {
-                        // Sad za sad ne treba
                         // mOnItemClickListener.onItemClick(view, faqs.get(position), position);
                     }
                 }
@@ -75,9 +73,6 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(ctx, "aaa", Toast.LENGTH_LONG).show();
-                    //boolean show = toggleLayoutExpand(!faq.expanded, v, view.lyt_expand);
-                    //faqs.get(position).expanded = show;
                 }
             });
 

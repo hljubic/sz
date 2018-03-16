@@ -14,18 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.R;
-import ba.sum.sum.models.Institution;
+import ba.sum.sum.models.Post;
 import ba.sum.sum.utils.ItemAnimation;
+import ba.sum.sum.utils.Tools;
 
-public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Institution> items = new ArrayList<>();
+    private List<Post> items = new ArrayList<>();
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
     private int lastPosition = -1;
     private boolean on_attach = true;
 
-    public AdapterFaculties(Context context, List<Institution> items) {
+    public AdapterNews(Context context, List<Post> items) {
         this.items = items;
         this.ctx = context;
     }
@@ -37,21 +38,23 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_faculties, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
         vh = new OriginalViewHolder(v);
         return vh;
     }
 
+    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         OriginalViewHolder view = (OriginalViewHolder) holder;
 
-        Institution institution = items.get(position);
+        Post post = items.get(position);
 
-        view.title.setText(institution.getName());
-        view.subtitle.setText(institution.getWeb());
+        view.title.setText(post.getTitle());
+        view.date.setText(post.getCreatedAt());
+        view.body.setText(Tools.stripHtml(post.getContent()));
 
-        Glide.with(ctx).load(institution.getFeaturedImage()).into(view.image_bg);
+        Glide.with(ctx).load(post.getFeaturedImage()).into(view.image);
 
         view.lyt_parent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +66,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
         });
 
         setAnimation(view.itemView, position);
+
     }
 
     @Override
@@ -90,20 +94,22 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, Institution institution, int position);
+        void onItemClick(View view, Post post, int position);
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        ImageView image_bg;
-        TextView title, subtitle;
+        ImageView image;
+        TextView title, date, body;
         View lyt_parent;
 
         public OriginalViewHolder(View v) {
             super(v);
-            image_bg = v.findViewById(R.id.iv_featured);
+            image = v.findViewById(R.id.iv_featured);
             title = v.findViewById(R.id.tv_title);
-            subtitle = v.findViewById(R.id.tv_title);
+            date = v.findViewById(R.id.tv_date);
+            body = v.findViewById(R.id.tv_body);
             lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }
+
 }

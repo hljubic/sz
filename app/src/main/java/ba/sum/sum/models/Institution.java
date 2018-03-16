@@ -22,7 +22,7 @@ public class Institution extends JsonTable<Institution> {
     private String content;
     @SerializedName("institution_id")
     private int institutionId;
-    private List<String> images;
+    private List<Document> images;
     private List<Institution> children;
     private List<Document> documents;
 
@@ -114,11 +114,11 @@ public class Institution extends JsonTable<Institution> {
         this.institutionId = institutionId;
     }
 
-    public List<String> getImages() {
+    public List<Document> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<Document> images) {
         this.images = images;
     }
 
@@ -136,5 +136,13 @@ public class Institution extends JsonTable<Institution> {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
+    }
+
+    public String getFeaturedImage() {
+        if (this.images != null && this.images.size() > 0) {
+            return this.images.get(0).getFile();
+        }
+
+        return "";
     }
 }

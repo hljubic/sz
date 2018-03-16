@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +42,6 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public String stripHtml(String html) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            return String.valueOf(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            return String.valueOf(Html.fromHtml(html));
-        }
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
@@ -68,7 +59,7 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
 
             final Document document = documents.get(position);
             view.name.setText(document.getTitle());
-            String desc = stripHtml(document.getDescription());
+            String desc = Tools.stripHtml(document.getDescription());
             if (desc.length() > 200) {
                 desc = desc.substring(0, 200) + "...";
             }
@@ -98,6 +89,7 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
                     documents.get(position).expanded = show;
                 }
             });
+
             view.opsirnije.setText("Preuzmi");
             view.opsirnije.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,8 +101,6 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
                 }
             });
 
-
-            // void recycling view
             if (document.expanded) {
                 view.lyt_expand.setVisibility(View.VISIBLE);
             } else {

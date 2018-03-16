@@ -66,11 +66,10 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             view.name.setText(institution.name);
 
             String desc = stripHtml(institution.getContent());
-            if (desc.length() > 200){
+            if (desc.length() > 200) {
                 desc = desc.substring(0, 200) + "...";
             }
             view.description.setText(desc);
-            // view.description.toString().substring(0,25);
             ColorGenerator generator = ColorGenerator.DEFAULT;
             final int color = generator.getRandomColor();
             String firstChar = institution.name != null && institution.name.length() > 0 ? institution.name.substring(0, 1) : " ";
@@ -78,7 +77,6 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .buildRound(firstChar, color);
             view.image.setImageDrawable(drawable);
 
-            // view.description.getText().toString().substring(0,20);
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

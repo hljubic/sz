@@ -99,7 +99,7 @@ public class FragmentFaculties extends Fragment {
 
     public void getData() {
 
-        StringRequest sastavniceRequest = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Institution> list = gson.fromJson(response, new TypeToken<List<Institution>>() {
@@ -110,7 +110,6 @@ public class FragmentFaculties extends Fragment {
                 institutions.clear();
 
                 for (Institution institution : list) {
-                    // Toast.makeText(getActivity(), institution.getInstitutionId() + "---", Toast.LENGTH_SHORT).show();
                     if (institution.getInstitutionId() == 1) {
                         institutions.add(institution);
                     }
@@ -139,7 +138,7 @@ public class FragmentFaculties extends Fragment {
 
         });
 
-        Volley.newRequestQueue(getActivity()).add(sastavniceRequest);
+        Volley.newRequestQueue(getActivity()).add(request);
     }
 
 
