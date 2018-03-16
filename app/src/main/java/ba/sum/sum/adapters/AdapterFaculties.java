@@ -102,7 +102,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(v);
             image_bg = v.findViewById(R.id.iv_featured);
             title = v.findViewById(R.id.tv_title);
-            subtitle = v.findViewById(R.id.tv_title);
+            subtitle = v.findViewById(R.id.tv_subtitle);
             lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }
