@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -29,21 +28,18 @@ import java.util.List;
 import ba.sum.sum.R;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.models.Institution;
-import ba.sum.sum.utils.Tools;
 
 public class FragmentAbout extends Fragment {
 
+    private static final String ARG_INSTITUTION_ID = "institution_id";
     private View parent_view;
     private ViewPager viewPager;
     private LinearLayout layout_dots;
     private AdapterImageSlider adapterImageSlider;
     private Runnable runnable = null;
     private Handler handler = new Handler();
-
-    private static final String ARG_INSTITUTION_ID = "institution_id";
-
     private Institution institution;
-
+    private SwipeRefreshLayout swipe_refresh;
     public FragmentAbout() {
     }
 
@@ -59,7 +55,7 @@ public class FragmentAbout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
 
-        institution = Institution.findParentOrChildById(String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
+        institution = Institution.findById(Institution.class, String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
 
         initComponent(root);
 
@@ -111,9 +107,30 @@ public class FragmentAbout extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
+        swipe_refresh = root.findViewById(R.id.swipe_refresh_layout);
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
 
-        // startAutoSlider(adapterImageSlider.getCount());
+            }
+        });
+
     }
+
+    public void refresh() {
+        Toast.makeText(getContext(), "Osvjezen about", Toast.LENGTH_LONG).show();
+
+        onPageFinished();
+    }
+
+
+    public void onPageFinished() {
+
+        swipe_refresh.setRefreshing(false);
+    }
+        // startAutoSlider(adapterImageSlider.getCount());
+
 
     private void addBottomDots(LinearLayout layout_dots, int size, int current) {
         ImageView[] dots = new ImageView[size];
@@ -148,6 +165,12 @@ public class FragmentAbout extends Fragment {
         handler.postDelayed(runnable, 3000);
     }
 
+    @Override
+    public void onDestroy() {
+        if (runnable != null) handler.removeCallbacks(runnable);
+        super.onDestroy();
+    }
+
     private static class AdapterImageSlider extends PagerAdapter {
 
         private Activity act;
@@ -155,18 +178,14 @@ public class FragmentAbout extends Fragment {
 
         private AdapterImageSlider.OnItemClickListener onItemClickListener;
 
-        private interface OnItemClickListener {
-            void onItemClick(View view, Image obj);
-        }
-
-        public void setOnItemClickListener(AdapterImageSlider.OnItemClickListener onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
-        }
-
         // constructor
         private AdapterImageSlider(Activity activity, List<Image> items) {
             this.act = activity;
             this.items = items;
+        }
+
+        public void setOnItemClickListener(AdapterImageSlider.OnItemClickListener onItemClickListener) {
+            this.onItemClickListener = onItemClickListener;
         }
 
         @Override
@@ -218,11 +237,9 @@ public class FragmentAbout extends Fragment {
 
         }
 
-    }
+        private interface OnItemClickListener {
+            void onItemClick(View view, Image obj);
+        }
 
-    @Override
-    public void onDestroy() {
-        if (runnable != null) handler.removeCallbacks(runnable);
-        super.onDestroy();
     }
 }

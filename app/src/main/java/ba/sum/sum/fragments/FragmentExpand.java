@@ -4,16 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.android.volley.toolbox.StringRequest;
-
-import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.List;
 
@@ -39,7 +33,6 @@ public class FragmentExpand extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_expand, container, false);
-
 
         initComponent(root);
 

@@ -12,6 +12,7 @@ import ba.sum.sum.utils.Constants;
  */
 
 public class Document extends JsonTable<Institution> {
+    public boolean expanded;
     private String title;
     @SerializedName("desc")
     private String description;
@@ -22,8 +23,6 @@ public class Document extends JsonTable<Institution> {
     private int institutionId;
     @SerializedName("post_id")
     private int postId;
-    public boolean expanded;
-
     private List<Document> documents;
 
     public String getTitle() {
@@ -43,7 +42,7 @@ public class Document extends JsonTable<Institution> {
     }
 
     public String getFile() {
-        return Constants.BASE_URL + "preuzmi/" + file;
+        return Constants.BASE_API_URL + "preuzmi/" + file;
     }
 
     public void setFile(String file) {

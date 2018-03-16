@@ -23,6 +23,7 @@ import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentFaculties;
 import ba.sum.sum.fragments.FragmentNews;
 import ba.sum.sum.fragments.FragmentWebView;
+import ba.sum.sum.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
         adapter.addFragment(FragmentFaculties.newInstance(), "Naslovnica");
         adapter.addFragment(FragmentNews.newInstance(2), "Novosti");
-        adapter.addFragment(FragmentWebView.newInstance("https://mobile.twitter.com/hashtag/jednojesveuciliste"), "Twitter");
+        adapter.addFragment(FragmentWebView.newInstance(Constants.BASE_URL + "tweets.html"), "Twitter");
         viewPager.setAdapter(adapter);
     }
 

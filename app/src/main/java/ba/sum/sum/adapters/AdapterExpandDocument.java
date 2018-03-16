@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -23,8 +22,6 @@ import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.models.Document;
-import ba.sum.sum.models.Institution;
-import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 import ba.sum.sum.utils.ViewAnimation;
 
@@ -37,41 +34,13 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
     private Context ctx;
     private AdapterExpandDocument.OnItemClickListener mOnItemClickListener;
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, Document obj, int position);
-    }
-
-    public void setOnItemClickListener(final AdapterExpandDocument.OnItemClickListener mItemClickListener) {
-        this.mOnItemClickListener = mItemClickListener;
-    }
-
     public AdapterExpandDocument(Context ctx, List<Document> documents) {
         this.documents = documents;
         this.ctx = ctx;
     }
 
-    public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image;
-        public TextView name;
-        public ImageButton bt_expand;
-        public View lyt_expand;
-        public View lyt_parent;
-        public HtmlTextView description;
-        public AppCompatButton opsirnije;
-
-
-        public OriginalViewHolder(View v) {
-            super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            name = (TextView) v.findViewById(R.id.name);
-            bt_expand = (ImageButton) v.findViewById(R.id.bt_expand);
-            lyt_expand = (View) v.findViewById(R.id.lyt_expand);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
-            description = (HtmlTextView) v.findViewById(R.id.tv_content);
-            opsirnije = (AppCompatButton) v.findViewById(R.id.bt_in_expand);
-
-
-        }
+    public void setOnItemClickListener(final AdapterExpandDocument.OnItemClickListener mItemClickListener) {
+        this.mOnItemClickListener = mItemClickListener;
     }
 
     public String stripHtml(String html) {
@@ -151,7 +120,6 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-
     private boolean toggleLayoutExpand(boolean show, View view, View lyt_expand) {
         Tools.toggleArrow(show, view);
         if (show) {
@@ -166,6 +134,33 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         return documents.size();
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, Document obj, int position);
+    }
+
+    public class OriginalViewHolder extends RecyclerView.ViewHolder {
+        public ImageView image;
+        public TextView name;
+        public ImageButton bt_expand;
+        public View lyt_expand;
+        public View lyt_parent;
+        public HtmlTextView description;
+        public AppCompatButton opsirnije;
+
+
+        public OriginalViewHolder(View v) {
+            super(v);
+            image = (ImageView) v.findViewById(R.id.image);
+            name = (TextView) v.findViewById(R.id.name);
+            bt_expand = (ImageButton) v.findViewById(R.id.bt_expand);
+            lyt_expand = (View) v.findViewById(R.id.lyt_expand);
+            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            description = (HtmlTextView) v.findViewById(R.id.tv_content);
+            opsirnije = (AppCompatButton) v.findViewById(R.id.bt_more);
+        }
     }
 
 }

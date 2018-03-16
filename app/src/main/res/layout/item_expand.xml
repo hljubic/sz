@@ -61,14 +61,13 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <org.sufficientlysecure.htmltextview.HtmlTextView
-            android:id="@+id/tv_content"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:textAlignment="gravity"
-            android:textAppearance="@android:style/TextAppearance.Small" />
-
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="U novije vrijeme razvoj informatičkih tehnologija sve više utječe na društvo u cjelini, npr. ekonomiju, medicinu i druge znanosti. U studiju informatike se stručni sadržaji realiziraju kroz obvezne i izborne kolegije. Dopunjuju se metodičkim i pedagoško-psihološkim sadržajima. " />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,7 +75,7 @@
             android:gravity="end">
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/bt_in_expand"
+                android:id="@+id/bt_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"

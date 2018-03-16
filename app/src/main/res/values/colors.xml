@@ -8,8 +8,6 @@
     <color name="overlay_dark_30">#4D000000</color>
     <color name="overlay_dark_40">#66000000</color>
 
-    <color name="overlay_light_80">#CCFFFFFF</color>
-
     <color name="grey_3">#f7f7f7</color>
     <color name="grey_5">#f2f2f2</color>
     <color name="grey_10">#e6e6e6</color>
@@ -21,8 +19,6 @@
 
 
     <!--Material color list from https://material.io/guidelines/style/color.html-->
-
-    <color name="light_green_600">#7CB342</color>
 
 
     <!--for random color generator -->

@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false">
+    android:background="@color/grey_10"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical">
 
-    <ImageView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:foreground="@color/overlay_light_80"
-        android:scaleType="centerCrop"
-        android:src="@drawable/image_13" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
+        android:id="@+id/layoutDots"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:gravity="top|center_horizontal"
+        android:minHeight="@dimen/spacing_xlarge"
+        android:orientation="horizontal" />
 
+    <com.balysv.materialripple.MaterialRippleLayout
+        style="@style/RippleStyleWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_middle">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+        <Button
+            android:id="@+id/btn_skip"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:text="Preskoči"
+            android:textAllCaps="true"
+            android:textColor="@color/grey_20"
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/layoutDots"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="top|center_horizontal"
-            android:orientation="horizontal" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

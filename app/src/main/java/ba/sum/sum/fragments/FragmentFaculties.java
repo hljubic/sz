@@ -1,13 +1,18 @@
 package ba.sum.sum.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,17 +26,18 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.hljubic.jsonorm.JsonTable;
-import ba.sum.sum.utils.Constants;
 import ba.sum.sum.DetailsActivity;
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterFaculties;
 import ba.sum.sum.models.Institution;
+import ba.sum.sum.utils.Constants;
 
 public class FragmentFaculties extends Fragment {
 
     private Gson gson;
     private ArrayList<Institution> institutions;
+    private AdapterFaculties mAdapter;
+    private SwipeRefreshLayout swipe_refresh;
 
     public static FragmentFaculties newInstance() {
         return new FragmentFaculties();
@@ -55,7 +61,7 @@ public class FragmentFaculties extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
-        final AdapterFaculties mAdapter = new AdapterFaculties(getActivity(), institutions);
+        mAdapter = new AdapterFaculties(getActivity(), institutions);
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new AdapterFaculties.OnItemClickListener() {
@@ -68,7 +74,32 @@ public class FragmentFaculties extends Fragment {
             }
         });
 
-        StringRequest sastavniceRequest = new StringRequest(Request.Method.GET, Constants.BASE_URL + "sastavnice/vazne", new Response.Listener<String>() {
+        getData();
+
+
+        swipe_refresh = root.findViewById(R.id.swipe_refresh_layout);
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipe_refresh.setRefreshing(true);
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipe_refresh.setRefreshing(false);
+
+                        getData();
+                        onPageFinished();
+                    }
+                }, 1000);
+            }
+
+        });
+
+    }
+
+    public void getData() {
+
+        StringRequest sastavniceRequest = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Institution> list = gson.fromJson(response, new TypeToken<List<Institution>>() {
@@ -87,6 +118,7 @@ public class FragmentFaculties extends Fragment {
 
                 mAdapter.notifyDataSetChanged();
 
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -97,10 +129,48 @@ public class FragmentFaculties extends Fragment {
                 institutions.addAll(Institution.listAll(Institution.class));
 
                 mAdapter.notifyDataSetChanged();
+
+
+                if (institutions.size() == 0) {
+                    showErrorDialog();
+                }
+
             }
+
         });
 
         Volley.newRequestQueue(getActivity()).add(sastavniceRequest);
+    }
+
+
+    private void showErrorDialog() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_warning);
+        dialog.setCancelable(false);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+
+        (dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    public void onPageFinished() {
+
+        swipe_refresh.setRefreshing(false);
+
     }
 
 }

@@ -1,9 +1,12 @@
 package ba.sum.sum;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,29 +21,60 @@ import android.widget.TextView;
 import ba.sum.sum.utils.Tools;
 
 public class IntroActivity extends AppCompatActivity {
-
     private static final int MAX_STEP = 4;
+    //  viewpager change listener
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
+        @Override
+        public void onPageSelected(final int position) {
+            bottomProgressDots(position);
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
+    private SharedPreferences sharedPreferences;
     private ViewPager viewPager;
+    private Button btnSkip;
     private MyViewPagerAdapter myViewPagerAdapter;
     private String about_title_array[] = {
-            "Ready to Travel",
-            "Pick the Ticket",
-            "Flight to Destination",
-            "Enjoy Holiday"
+            "Sveučilište u Mostaru",
+            "Studentski zbor",
+            "Studentski centar",
+            "Sveučilište u Mostaru"
+
     };
     private String about_description_array[] = {
-            "Choose your destination, plan Your trip. Pick the best place for Your holiday",
-            "Select the day, pick Your ticket. We give you the best prices. We guarantee!",
-            "Safe and Comfort flight is our priority. Professional crew and services.",
-            "Enjoy your holiday, Dont forget to feel the moment and take a photo!",
+            "Sveučilište u Mostaru sadrži deset fakulteta i jednu akademiju.",
+            "Studentski zbor je najviše predstavničko tijelo studenata u Mostaru.",
+            "Studentski centar radi na unaprijeđenju studentskih standarda.",
+            "Hvala Vam što ste odabrali SUM. Sretno u daljnjem obrazovanju!",
     };
     private int about_images_array[] = {
-            R.drawable.img_wizard_1,
-            R.drawable.img_wizard_2,
-            R.drawable.img_wizard_3,
-            R.drawable.img_wizard_4
+            R.drawable.intro_sum,
+            R.drawable.intro_sz,
+            R.drawable.intro_sc,
+            R.drawable.intro_jjs
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.getBoolean("firstime", true)) {
+            sharedPreferences.edit().putBoolean("firstime", false).apply();
+        } else {
+            skipIntro();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +82,31 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
+        btnSkip = findViewById(R.id.btn_skip);
 
         // adding bottom dots
         bottomProgressDots(0);
 
+        viewPager.setPageMargin(getResources().getDimensionPixelOffset(R.dimen.viewpager_margin_overlap));
+        viewPager.setOffscreenPageLimit(4);
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         Tools.setSystemBarColor(this, R.color.grey_20);
+
+        btnSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipIntro();
+            }
+        });
     }
 
+    public void skipIntro() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
 
     private void bottomProgressDots(int current_index) {
         LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -78,28 +126,9 @@ public class IntroActivity extends AppCompatActivity {
 
         if (dots.length > 0) {
             dots[current_index].setImageResource(R.drawable.shape_circle);
-            dots[current_index].setColorFilter(getResources().getColor(R.color.light_green_600), PorterDuff.Mode.SRC_IN);
+            dots[current_index].setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         }
     }
-
-    //  viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(final int position) {
-            bottomProgressDots(position);
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
 
     /**
      * View pager adapter
@@ -123,9 +152,9 @@ public class IntroActivity extends AppCompatActivity {
             btnNext = (Button) view.findViewById(R.id.btn_next);
 
             if (position == about_title_array.length - 1) {
-                btnNext.setText("Get Started");
+                btnNext.setText("Pokreni aplikaciju");
             } else {
-                btnNext.setText("Next");
+                btnNext.setText("Dalje");
             }
 
             btnNext.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +165,8 @@ public class IntroActivity extends AppCompatActivity {
                         // move to next screen
                         viewPager.setCurrentItem(current);
                     } else {
-                        finish();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                     }
                 }
             });
@@ -154,7 +184,6 @@ public class IntroActivity extends AppCompatActivity {
         public boolean isViewFromObject(View view, Object obj) {
             return view == obj;
         }
-
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {

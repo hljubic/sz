@@ -13,6 +13,7 @@ import ba.sum.sum.utils.Constants;
 
 public class Institution extends JsonTable<Institution> {
     public String name;
+    public boolean expanded;
     private String logo;
     private String address;
     private String web;
@@ -21,13 +22,32 @@ public class Institution extends JsonTable<Institution> {
     private String content;
     @SerializedName("institution_id")
     private int institutionId;
-
     private List<String> images;
     private List<Institution> children;
     private List<Document> documents;
-    public boolean expanded;
 
     public Institution() {
+    }
+
+    public static Institution findParentOrChildById(String id) {
+        List<Institution> institutions = listAll(Institution.class);
+
+        for (Institution institution : institutions) {
+            if (institution.getId().equals(id)) {
+                return institution;
+            }
+        }
+
+        for (Institution institution : institutions) {
+
+            for (Institution child : institution.getChildren()) {
+                if (child.getId().equals(id)) {
+                    return child;
+                }
+            }
+        }
+
+        return null;
     }
 
     public String getName() {
@@ -39,7 +59,7 @@ public class Institution extends JsonTable<Institution> {
     }
 
     public String getLogo() {
-        return Constants.BASE_URL + "preuzmi/" + logo;
+        return Constants.BASE_API_URL + "preuzmi/" + logo;
     }
 
     public void setLogo(String logo) {
@@ -116,27 +136,5 @@ public class Institution extends JsonTable<Institution> {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
-    }
-
-
-    public static Institution findParentOrChildById(String id) {
-        List<Institution> institutions = listAll(Institution.class);
-
-        for (Institution institution : institutions) {
-            if (institution.getId().equals(id)) {
-                return institution;
-            }
-        }
-
-        for (Institution institution : institutions) {
-
-            for (Institution child : institution.getChildren()) {
-                if (child.getId().equals(id)) {
-                    return child;
-                }
-            }
-        }
-
-        return null;
     }
 }

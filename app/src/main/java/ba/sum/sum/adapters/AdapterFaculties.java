@@ -1,6 +1,7 @@
 package ba.sum.sum.adapters;
 
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,44 +15,26 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.sum.sum.utils.Constants;
 import ba.sum.sum.R;
 import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.ItemAnimation;
 
 public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    SwipeRefreshLayout swipe_refresh;
     private List<Institution> items = new ArrayList<>();
-
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, Institution institution, int position);
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mOnItemClickListener = mItemClickListener;
-    }
+    private int lastPosition = -1;
+    private boolean on_attach = true;
 
     public AdapterFaculties(Context context, List<Institution> items) {
         this.items = items;
         this.ctx = context;
     }
 
-    public class OriginalViewHolder extends RecyclerView.ViewHolder {
-        ImageView image_bg;
-        TextView title;
-        Button brief;
-        View lyt_parent;
-
-        public OriginalViewHolder(View v) {
-            super(v);
-            image_bg = v.findViewById(R.id.image_bg);
-            title = v.findViewById(R.id.title);
-            brief = v.findViewById(R.id.brief);
-            lyt_parent = v.findViewById(R.id.lyt_parent);
-        }
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mOnItemClickListener = mItemClickListener;
     }
 
     @Override
@@ -99,9 +82,6 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    private int lastPosition = -1;
-    private boolean on_attach = true;
-
     @Override
     public int getItemCount() {
         return items.size();
@@ -111,6 +91,25 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (position > lastPosition) {
             ItemAnimation.animate(view, on_attach ? position : -1, ItemAnimation.FADE_IN);
             lastPosition = position;
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, Institution institution, int position);
+    }
+
+    public class OriginalViewHolder extends RecyclerView.ViewHolder {
+        ImageView image_bg;
+        TextView title;
+        Button brief;
+        View lyt_parent;
+
+        public OriginalViewHolder(View v) {
+            super(v);
+            image_bg = v.findViewById(R.id.image_bg);
+            title = v.findViewById(R.id.title);
+            brief = v.findViewById(R.id.brief);
+            lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }
 
