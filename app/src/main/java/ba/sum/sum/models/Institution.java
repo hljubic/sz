@@ -78,7 +78,9 @@ public class Institution extends JsonTable<Institution> {
         this.type = type;
     }
 
-    public String getContent() {return content;}
+    public String getContent() {
+        return content;
+    }
 
     public void setContent(String content) {
         this.content = content;
@@ -116,13 +118,25 @@ public class Institution extends JsonTable<Institution> {
         this.documents = documents;
     }
 
-    @Override
-    public void save() {
-        super.save();
 
-        for (Institution i :
-                children) {
-            i.save();
+    public static Institution findParentOrChildById(String id) {
+        List<Institution> institutions = listAll(Institution.class);
+
+        for (Institution institution : institutions) {
+            if (institution.getId().equals(id)) {
+                return institution;
+            }
         }
+
+        for (Institution institution : institutions) {
+
+            for (Institution child : institution.getChildren()) {
+                if (child.getId().equals(id)) {
+                    return child;
+                }
+            }
+        }
+
+        return null;
     }
 }
