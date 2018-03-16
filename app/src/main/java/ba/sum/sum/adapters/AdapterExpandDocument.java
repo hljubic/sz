@@ -133,9 +133,8 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
             view.opsirnije.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(ctx, "Kliknuli ste na preuzimanje", Toast.LENGTH_LONG).show();
                     Intent i = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(Constants.BASE_URL + "slika/" + documents.get(position).getFile()));
+                            Uri.parse(documents.get(position).getFile()));
                     ctx.startActivity(i);
 
                 }

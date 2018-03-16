@@ -39,7 +39,7 @@ public class Institution extends JsonTable<Institution> {
     }
 
     public String getLogo() {
-        return Constants.BASE_URL + "slika/" + logo;
+        return Constants.BASE_URL + "preuzmi/" + logo;
     }
 
     public void setLogo(String logo) {
