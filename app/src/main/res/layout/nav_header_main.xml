@@ -13,10 +13,9 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_logo_nav"
         android:layout_width="130dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/ic_sum" />
+        android:layout_height="100dp" />
 
     <TextView
         android:layout_width="match_parent"
