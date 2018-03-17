@@ -24,14 +24,6 @@
         <item name="mrl_rippleAlpha">0.2</item>
     </style>
 
-    <style name="TextAppearance.Medium.Bold" parent="@style/TextAppearance.AppCompat.Medium">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.Subhead.Bold" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="Button.White.Primary" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@android:color/white</item>
         <item name="android:textColor">@color/colorPrimary</item>

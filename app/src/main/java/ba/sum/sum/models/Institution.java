@@ -19,12 +19,14 @@ public class Institution extends JsonTable<Institution> {
     private String web;
     private String phone;
     private String type;
+    private String latitude;
+    private String longitude;
     private String content;
     @SerializedName("institution_id")
     private int institutionId;
     private List<Document> images;
-    private List<Institution> children;
     private List<Document> documents;
+    private List<Institution> children;
 
     public Institution() {
     }
@@ -96,6 +98,20 @@ public class Institution extends JsonTable<Institution> {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Double getLatitude() {
+        if (latitude == null)
+            return null;
+
+        return Double.parseDouble(latitude);
+    }
+
+    public Double getLongitude() {
+        if (longitude == null)
+            return null;
+
+        return Double.parseDouble(longitude);
     }
 
     public String getContent() {

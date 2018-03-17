@@ -72,11 +72,12 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/ib_heart"
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/grey_40"
-                    app:srcCompat="@drawable/ic_favorites" />
+                    app:srcCompat="@drawable/ic_favorite_border" />
 
                 <ImageButton
                     android:layout_width="?attr/actionBarSize"
@@ -87,6 +88,7 @@
                     app:srcCompat="@drawable/ic_public" />
 
                 <ImageButton
+                    android:id="@+id/ib_share"
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/selectableItemBackgroundBorderless"

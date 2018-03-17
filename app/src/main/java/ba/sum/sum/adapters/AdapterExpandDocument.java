@@ -123,9 +123,8 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return documents.size();
+        return documents == null ? 0 : documents.size();
     }
-
 
     public interface OnItemClickListener {
         void onItemClick(View view, Document obj, int position);

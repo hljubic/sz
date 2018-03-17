@@ -1,7 +1,6 @@
 package ba.sum.sum;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +26,6 @@ import ba.sum.sum.utils.LineItemDecoration;
 public class FaqActivity extends AppCompatActivity {
     Gson gson;
     private ArrayList<Faq> faqs;
-    private SwipeRefreshLayout swipe_refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -45,7 +45,7 @@ public class FragmentExpand extends Fragment {
         recyclerView.addItemDecoration(new LineItemDecoration(getActivity(), LinearLayout.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
-        Institution institution = Institution.findById(Institution.class, getActivity().getIntent().getExtras().getString("institution_id"));
+        Institution institution = Institution.findParentOrChildById(getActivity().getIntent().getExtras().getString("institution_id"));
         List<Institution> items = institution.getChildren();
         List<Document> documents = institution.getDocuments();
 
