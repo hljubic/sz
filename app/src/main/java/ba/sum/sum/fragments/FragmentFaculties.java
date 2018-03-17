@@ -69,13 +69,11 @@ public class FragmentFaculties extends Fragment {
             public void onItemClick(View view, Institution institution, int position) {
                 Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 intent.putExtra("institution_id", institution.getId());
-                intent.putExtra("institution_name", institution.getName());
                 startActivity(intent);
             }
         });
 
         getData();
-
 
         swipe_refresh = root.findViewById(R.id.swipe_refresh_layout);
         swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -125,10 +123,15 @@ public class FragmentFaculties extends Fragment {
                 Toast.makeText(getActivity(), R.string.cant_connect, Toast.LENGTH_LONG).show();
 
                 institutions.clear();
-                institutions.addAll(Institution.listAll(Institution.class));
+                List<Institution> list = Institution.listAll(Institution.class);
+
+                for (Institution institution : list) {
+                    if (institution.getInstitutionId() == 1) {
+                        institutions.add(institution);
+                    }
+                }
 
                 mAdapter.notifyDataSetChanged();
-
 
                 if (institutions.size() == 0) {
                     showErrorDialog();

@@ -1,5 +1,7 @@
 package ba.sum.sum;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -25,18 +27,28 @@ public class DetailsActivity extends AppCompatActivity {
         if (getIntent().getExtras() == null)
             return;
 
-        String id = getIntent().getExtras().getString("institution_id", "");
-        institution = Institution.findParentOrChildById(id);
+        try {
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(institution.getName());
-        setSupportActionBar(toolbar);
+            String id = getIntent().getExtras().getString("institution_id", "");
+            institution = Institution.findParentOrChildById(id);
 
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        setupViewPager(viewPager);
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle(institution.getName());
+            setSupportActionBar(toolbar);
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+            }
+
+            ViewPager viewPager = findViewById(R.id.view_pager);
+            setupViewPager(viewPager);
+
+            TabLayout tabLayout = findViewById(R.id.tab_layout);
+            tabLayout.setupWithViewPager(viewPager);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -57,7 +69,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.details, menu);
         return true;
     }
 
@@ -68,11 +80,21 @@ public class DetailsActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_navigate) {
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + institution.getLatitude() + ","
+                    + institution.getLongitude() + "&mode=w");
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

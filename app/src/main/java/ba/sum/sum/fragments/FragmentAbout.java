@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
@@ -39,7 +37,7 @@ public class FragmentAbout extends Fragment {
     private Runnable runnable = null;
     private Handler handler = new Handler();
     private Institution institution;
-    private SwipeRefreshLayout swipe_refresh;
+
     public FragmentAbout() {
     }
 
@@ -55,7 +53,7 @@ public class FragmentAbout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
 
-        institution = Institution.findById(Institution.class, String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
+        institution = Institution.findParentOrChildById(String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
 
         initComponent(root);
 
@@ -107,30 +105,8 @@ public class FragmentAbout extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        swipe_refresh = root.findViewById(R.id.swipe_refresh_layout);
-        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-
-            }
-        });
 
     }
-
-    public void refresh() {
-        Toast.makeText(getContext(), "Osvjezen about", Toast.LENGTH_LONG).show();
-
-        onPageFinished();
-    }
-
-
-    public void onPageFinished() {
-
-        swipe_refresh.setRefreshing(false);
-    }
-        // startAutoSlider(adapterImageSlider.getCount());
-
 
     private void addBottomDots(LinearLayout layout_dots, int size, int current) {
         ImageView[] dots = new ImageView[size];

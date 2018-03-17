@@ -1,16 +1,17 @@
 package ba.sum.sum.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.R;
@@ -19,7 +20,7 @@ import ba.sum.sum.utils.ItemAnimation;
 
 public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Institution> items = new ArrayList<>();
+    private List<Institution> items;
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
     private int lastPosition = -1;
@@ -44,7 +45,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        OriginalViewHolder view = (OriginalViewHolder) holder;
+        final OriginalViewHolder view = (OriginalViewHolder) holder;
 
         Institution institution = items.get(position);
 
@@ -59,6 +60,21 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
                 if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(view, items.get(position), position);
                 }
+            }
+        });
+
+        view.heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.heart.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ic_favorites));
+                view.heart.setColorFilter(ContextCompat.getColor(ctx, R.color.colorAccent));
+            }
+        });
+
+        view.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -96,6 +112,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
         ImageView image_bg;
         TextView title, subtitle;
+        ImageButton heart, share;
         View lyt_parent;
 
         public OriginalViewHolder(View v) {
@@ -103,6 +120,8 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
             image_bg = v.findViewById(R.id.iv_featured);
             title = v.findViewById(R.id.tv_title);
             subtitle = v.findViewById(R.id.tv_subtitle);
+            heart = v.findViewById(R.id.ib_heart);
+            share = v.findViewById(R.id.ib_share);
             lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }
