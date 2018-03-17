@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_university"
             android:title="Sveučilište u Mostaru" />
         <item
-            android:id="@+id/nav_zbor"
+            android:id="@+id/nav_choir"
             android:icon="@drawable/ic_group"
             android:title="Studentski zbor" />
         <item
@@ -30,7 +30,7 @@
                 android:icon="@drawable/person"
                 android:title="Rektorova riječ" />
             <item
-                android:id="@+id/nav_noti"
+                android:id="@+id/nav_notifications"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Obavijesti" />
             <item

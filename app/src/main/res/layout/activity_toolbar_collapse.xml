@@ -59,7 +59,6 @@
             android:orientation="vertical">
 
 
-
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -68,7 +67,8 @@
                 android:text="Title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textColor="@android:color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,7 +76,6 @@
                 android:layout_marginBottom="@dimen/spacing_mlarge"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
 
 
             </LinearLayout>
@@ -93,7 +92,6 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

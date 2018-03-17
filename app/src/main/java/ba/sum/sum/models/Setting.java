@@ -3,6 +3,7 @@ package ba.sum.sum.models;
 import com.google.gson.annotations.SerializedName;
 
 import ba.hljubic.jsonorm.JsonTable;
+import ba.sum.sum.utils.Constants;
 
 /**
  * Created by HP_PC on 17.3.2018..
@@ -43,7 +44,7 @@ public class Setting extends JsonTable<Setting> {
     }
 
     public String getFilename() {
-        return filename;
+        return Constants.BASE_API_URL + "preuzmi/" + filename;
     }
 
     public void setFilename(String filename) {
