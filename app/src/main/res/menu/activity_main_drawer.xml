@@ -4,16 +4,17 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_university"
             android:icon="@drawable/ic_university"
             android:title="Sveučilište u Mostaru" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_zbor"
             android:icon="@drawable/ic_group"
             android:title="Studentski zbor" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_center"
             android:icon="@drawable/ic_business"
             android:title="Studentski centar" />
         <item
@@ -25,11 +26,15 @@
     <item android:title="Ostalo">
         <menu>
             <item
-                android:id="@+id/ic_"
+                android:id="@+id/nav_rector"
+                android:icon="@drawable/person"
+                android:title="Rektorova riječ" />
+            <item
+                android:id="@+id/nav_noti"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Obavijesti" />
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_faq"
                 android:icon="@drawable/ic_question"
                 android:title="Česta pitanja" />
         </menu>

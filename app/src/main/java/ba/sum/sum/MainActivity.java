@@ -127,7 +127,26 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("institution_id", "4");
                     startActivity(intent);
 
-                } else if (id == R.id.nav_service) {
+                }  else if (id == R.id.nav_service) {
+
+                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                    intent.putExtra("institution_id", "4");
+                    intent.putExtra("institution_name", "Studentski Servis");
+                    startActivity(intent);
+
+                } else if (id == R.id.nav_rector) {
+
+                    Intent intent = new Intent(getApplicationContext(), RectorActivity.class);
+                    startActivity(intent);
+
+                } else if (id == R.id.nav_share) {
+
+                } else if (id == R.id.nav_noti) {
+
+                } else if (id == R.id.nav_faq) {
+
+                    Intent intent = new Intent(getApplicationContext(), FaqActivity.class);
+                    startActivity(intent);
 
                 }
             }
