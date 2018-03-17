@@ -108,35 +108,47 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 //otvara sveuciliste
-                if (id == R.id.nav_camera) {
+                if (id == R.id.nav_university) {
                     Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
                     intent.putExtra("institution_id", "1");
                     intent.putExtra("institution_name", "Sveučilište u Mostaru");
                     startActivity(intent);
                     //otvori studentski zbor
-                } else if (id == R.id.nav_gallery) {
+                } else if (id == R.id.nav_zbor) {
                     Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
                     intent.putExtra("institution_id", "2");
                     intent.putExtra("institution_name", "Studentski zbor");
                     startActivity(intent);
                     //otvara studentski centar
-                } else if (id == R.id.nav_manage) {
+                } else if (id == R.id.nav_center) {
                     Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
                     intent.putExtra("institution_id", "3");
                     intent.putExtra("institution_name", "Studentski Centar");
                     startActivity(intent);
                     // otvara studentski servis
-                } else if (id == R.id.nav_share) {
+                } else if (id == R.id.nav_service) {
+
                     Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
-                    //intent.putExtra("institution_id", "4");
+                    intent.putExtra("institution_id", "4");
                     intent.putExtra("institution_name", "Studentski Servis");
                     startActivity(intent);
 
-                } else if (id == R.id.nav_send) {
+                } else if (id == R.id.nav_rector) {
 
-                } else if (id == R.id.nav_service) {
+                    Intent intent = new Intent(getApplicationContext(), RectorActivity.class);
+                    startActivity(intent);
+
+                } else if (id == R.id.nav_share) {
+
+                } else if (id == R.id.nav_noti) {
+
+                } else if (id == R.id.nav_faq) {
+
+                    Intent intent = new Intent(getApplicationContext(), FaqActivity.class);
+                    startActivity(intent);
 
                 }
+
             }
         }, 200);
 
