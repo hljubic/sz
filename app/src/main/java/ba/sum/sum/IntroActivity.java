@@ -17,11 +17,32 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ba.sum.sum.models.Step;
+import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
 public class IntroActivity extends AppCompatActivity {
     private static final int MAX_STEP = 4;
+    ImageView image;
+    TextView title;
+    HtmlTextView content;
+    Step step;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -40,6 +61,8 @@ public class IntroActivity extends AppCompatActivity {
 
         }
     };
+    private Gson gson;
+    private List<Step> steps;
     private SharedPreferences sharedPreferences;
     private ViewPager viewPager;
     private Button btnSkip;
@@ -80,7 +103,9 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-
+       /* image = findViewById(R.id.image);
+        title = findViewById(R.id.title);
+        content = (HtmlTextView) findViewById(R.id.description);*/
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         btnSkip = findViewById(R.id.btn_skip);
 
@@ -93,6 +118,7 @@ public class IntroActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
+        getData();
         Tools.setSystemBarColor(this, R.color.grey_20);
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +127,36 @@ public class IntroActivity extends AppCompatActivity {
                 skipIntro();
             }
         });
+    }
+
+    public void getData() {
+
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "koraci", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<Step> list = gson.fromJson(response, new TypeToken<List<Step>>() {
+                }.getType());
+
+                Step.saveAllAsync(Step.class, list);
+                steps.clear();
+                myViewPagerAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), R.string.cant_connect, Toast.LENGTH_LONG).show();
+
+                steps.clear();
+                // List<Step> list = Step.listAll(Step.class);
+                myViewPagerAdapter.notifyDataSetChanged();
+               /* if (institutions.size() == 0) {
+                    showErrorDialog();
+                }*/
+            }
+
+        });
+
+        Volley.newRequestQueue(getApplicationContext()).add(request);
     }
 
     public void skipIntro() {
@@ -145,17 +201,26 @@ public class IntroActivity extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_intro, container, false);
-            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
-            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
-            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);
+            image = view.findViewById(R.id.image);
+            title = view.findViewById(R.id.title);
+            content = (HtmlTextView) view.findViewById(R.id.description);
+            // Step step = steps.get(position);
 
-            btnNext = (Button) view.findViewById(R.id.btn_next);
+            title.setText(step.getTitle());
+            content.setText(step.getContent());
+
+            Glide.with(getApplicationContext()).load(step.getImage()).into(image);
+           /* ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
+            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
+            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);*/
+
+         /*   btnNext = (Button) view.findViewById(R.id.btn_next);
 
             if (position == about_title_array.length - 1) {
                 btnNext.setText("Pokreni aplikaciju");
             } else {
                 btnNext.setText("Dalje");
-            }
+            }*/
 
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
