@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +41,6 @@ import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
 public class IntroActivity extends AppCompatActivity {
-    private ImageView image;
-    private TextView title;
-    private HtmlTextView content;
-    private Step step;
     private List<Step> steps;
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -64,16 +59,14 @@ public class IntroActivity extends AppCompatActivity {
 
         }
     };
-    private SharedPreferences sharedPreferences;
     private ViewPager viewPager;
-    private Button btnSkip;
     private MyViewPagerAdapter myViewPagerAdapter;
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getBoolean("firstime", true)) {
             sharedPreferences.edit().putBoolean("firstime", false).apply();
         } else {
@@ -88,8 +81,8 @@ public class IntroActivity extends AppCompatActivity {
 
         steps = new ArrayList<>();
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        btnSkip = findViewById(R.id.btn_skip);
+        viewPager = findViewById(R.id.view_pager);
+        Button btnSkip = findViewById(R.id.btn_skip);
 
         // adding bottom dots
         bottomProgressDots(0);
@@ -101,6 +94,7 @@ public class IntroActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         getData();
+
         Tools.setSystemBarColor(this, R.color.grey_20);
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +115,6 @@ public class IntroActivity extends AppCompatActivity {
 
                 steps.clear();
                 steps.addAll(list);
-
-                Log.wtf("aaaaaa", response);
-                Log.wtf("bbbbbb", new Gson().toJson(steps));
 
                 myViewPagerAdapter.notifyDataSetChanged();
             }
@@ -206,9 +197,9 @@ public class IntroActivity extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_intro, container, false);
-            image = view.findViewById(R.id.image);
-            title = view.findViewById(R.id.title);
-            content = (HtmlTextView) view.findViewById(R.id.description);
+            ImageView image = view.findViewById(R.id.image);
+            TextView title = view.findViewById(R.id.title);
+            HtmlTextView content = view.findViewById(R.id.description);
             Step step = steps.get(position);
 
             title.setText(step.getTitle());
@@ -220,7 +211,7 @@ public class IntroActivity extends AppCompatActivity {
 
             Glide.with(getApplicationContext()).load(steps.get(position).getImage()).into((ImageView) view.findViewById(R.id.image));
 
-            btnNext = (Button) view.findViewById(R.id.btn_next);
+            btnNext = view.findViewById(R.id.btn_next);
 
             if (position == steps.size() - 1) {
                 btnNext.setText(steps.get(position).getButton());
