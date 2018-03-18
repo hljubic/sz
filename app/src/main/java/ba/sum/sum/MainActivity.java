@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
 
         if (id == R.id.action_maps) {
-            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
             intent.putExtra("only_faculties", true);
             startActivity(intent);
             return true;
@@ -109,30 +109,30 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 if (id == R.id.nav_university) {
-                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                     intent.putExtra("institution_id", "1");
                     startActivity(intent);
                 } else if (id == R.id.nav_choir) {
-                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                     intent.putExtra("institution_id", "2");
                     startActivity(intent);
                 } else if (id == R.id.nav_center) {
-                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                     intent.putExtra("institution_id", "3");
                     startActivity(intent);
                 } else if (id == R.id.nav_service) {
-                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                     intent.putExtra("institution_id", "4");
                     startActivity(intent);
                 } else if (id == R.id.nav_rector) {
-                    Intent intent = new Intent(getApplicationContext(), RectorActivity.class);
+                    Intent intent = new Intent(MainActivity.this, RectorActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_pois) {
-                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                     intent.putExtra("only_faculties", false);
                     startActivity(intent);
                 } else if (id == R.id.nav_faq) {
-                    Intent intent = new Intent(getApplicationContext(), FaqActivity.class);
+                    Intent intent = new Intent(MainActivity.this, FaqActivity.class);
                     startActivity(intent);
                 }
             }

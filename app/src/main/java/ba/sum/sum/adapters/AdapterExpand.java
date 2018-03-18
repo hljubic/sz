@@ -147,15 +147,13 @@ public class AdapterExpand extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            name = (TextView) v.findViewById(R.id.name);
-            bt_expand = (ImageButton) v.findViewById(R.id.bt_expand);
-            lyt_expand = (View) v.findViewById(R.id.lyt_expand);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
-            description = (HtmlTextView) v.findViewById(R.id.tv_content);
-            opsirnije = (AppCompatButton) v.findViewById(R.id.bt_more);
-
-
+            image = v.findViewById(R.id.image);
+            name = v.findViewById(R.id.name);
+            bt_expand = v.findViewById(R.id.bt_expand);
+            lyt_expand = v.findViewById(R.id.lyt_expand);
+            lyt_parent = v.findViewById(R.id.lyt_parent);
+            description = v.findViewById(R.id.tv_content);
+            opsirnije = v.findViewById(R.id.bt_more);
         }
     }
 
