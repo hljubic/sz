@@ -144,7 +144,6 @@ public class FragmentFaculties extends Fragment {
         Volley.newRequestQueue(getActivity()).add(request);
     }
 
-
     private void showErrorDialog() {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
@@ -170,9 +169,6 @@ public class FragmentFaculties extends Fragment {
     }
 
     public void onPageFinished() {
-
         swipe_refresh.setRefreshing(false);
-
     }
-
 }

@@ -1,12 +1,11 @@
 package ba.sum.sum.models;
 
-import android.widget.Button;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 import ba.hljubic.jsonorm.JsonTable;
+import ba.sum.sum.utils.Constants;
 
 /**
  * Created by Darko on 18.3.2018..
@@ -16,7 +15,7 @@ public class Step extends JsonTable<Step> {
     private String title;
     private String image;
     private String content;
-    private Button button;
+    private String button;
     @SerializedName("user_id")
     private int userId;
 
@@ -31,7 +30,7 @@ public class Step extends JsonTable<Step> {
     }
 
     public String getImage() {
-        return image;
+        return Constants.BASE_API_URL + "preuzmi/" + image;
     }
 
     public void setImage(String image) {
@@ -46,11 +45,11 @@ public class Step extends JsonTable<Step> {
         this.content = content;
     }
 
-    public Button getButton() {
+    public String getButton() {
         return button;
     }
 
-    public void setButton(Button button) {
+    public void setButton(String button) {
         this.button = button;
     }
 

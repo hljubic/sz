@@ -1,5 +1,6 @@
 package ba.sum.sum;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,9 +11,12 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,12 +42,11 @@ import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
 public class IntroActivity extends AppCompatActivity {
-    private static final int MAX_STEP = 4;
-    ImageView image;
-    TextView title;
-    HtmlTextView content;
-    Step step;
-    //  viewpager change listener
+    private ImageView image;
+    private TextView title;
+    private HtmlTextView content;
+    private Step step;
+    private List<Step> steps;
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -61,35 +64,14 @@ public class IntroActivity extends AppCompatActivity {
 
         }
     };
-    private Gson gson;
-    private List<Step> steps;
     private SharedPreferences sharedPreferences;
     private ViewPager viewPager;
     private Button btnSkip;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private String about_title_array[] = {
-            "Sveučilište u Mostaru",
-            "Studentski zbor",
-            "Studentski centar",
-            "Sveučilište u Mostaru"
-
-    };
-    private String about_description_array[] = {
-            "Sveučilište u Mostaru sadrži deset fakulteta i jednu akademiju.",
-            "Studentski zbor je najviše predstavničko tijelo studenata u Mostaru.",
-            "Studentski centar radi na unaprijeđenju studentskih standarda.",
-            "Hvala Vam što ste odabrali SUM. Sretno u daljnjem obrazovanju!",
-    };
-    private int about_images_array[] = {
-            R.drawable.intro_sum,
-            R.drawable.intro_sz,
-            R.drawable.intro_sc,
-            R.drawable.intro_jjs
-    };
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getBoolean("firstime", true)) {
@@ -103,9 +85,9 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-       /* image = findViewById(R.id.image);
-        title = findViewById(R.id.title);
-        content = (HtmlTextView) findViewById(R.id.description);*/
+
+        steps = new ArrayList<>();
+
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         btnSkip = findViewById(R.id.btn_skip);
 
@@ -134,11 +116,15 @@ public class IntroActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "koraci", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                ArrayList<Step> list = gson.fromJson(response, new TypeToken<List<Step>>() {
+                List<Step> list = new Gson().fromJson(response, new TypeToken<List<Step>>() {
                 }.getType());
 
-                Step.saveAllAsync(Step.class, list);
                 steps.clear();
+                steps.addAll(list);
+
+                Log.wtf("aaaaaa", response);
+                Log.wtf("bbbbbb", new Gson().toJson(steps));
+
                 myViewPagerAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {
@@ -146,12 +132,7 @@ public class IntroActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), R.string.cant_connect, Toast.LENGTH_LONG).show();
 
-                steps.clear();
-                // List<Step> list = Step.listAll(Step.class);
-                myViewPagerAdapter.notifyDataSetChanged();
-               /* if (institutions.size() == 0) {
-                    showErrorDialog();
-                }*/
+                showErrorDialog();
             }
 
         });
@@ -164,9 +145,33 @@ public class IntroActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void showErrorDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_warning);
+        dialog.setCancelable(false);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+
+        (dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
     private void bottomProgressDots(int current_index) {
         LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        ImageView[] dots = new ImageView[MAX_STEP];
+        ImageView[] dots = new ImageView[steps.size()];
 
         dotsLayout.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
@@ -204,29 +209,30 @@ public class IntroActivity extends AppCompatActivity {
             image = view.findViewById(R.id.image);
             title = view.findViewById(R.id.title);
             content = (HtmlTextView) view.findViewById(R.id.description);
-            // Step step = steps.get(position);
+            Step step = steps.get(position);
 
             title.setText(step.getTitle());
-            content.setText(step.getContent());
+            content.setHtml(step.getContent());
 
             Glide.with(getApplicationContext()).load(step.getImage()).into(image);
-           /* ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
-            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
-            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);*/
+            ((TextView) view.findViewById(R.id.title)).setText(steps.get(position).getTitle());
+            ((TextView) view.findViewById(R.id.description)).setText(steps.get(position).getContent());
 
-         /*   btnNext = (Button) view.findViewById(R.id.btn_next);
+            Glide.with(getApplicationContext()).load(steps.get(position).getImage()).into((ImageView) view.findViewById(R.id.image));
 
-            if (position == about_title_array.length - 1) {
-                btnNext.setText("Pokreni aplikaciju");
+            btnNext = (Button) view.findViewById(R.id.btn_next);
+
+            if (position == steps.size() - 1) {
+                btnNext.setText(steps.get(position).getButton());
             } else {
-                btnNext.setText("Dalje");
-            }*/
+                btnNext.setText(steps.get(position).getButton());
+            }
 
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int current = viewPager.getCurrentItem() + 1;
-                    if (current < MAX_STEP) {
+                    if (current < steps.size()) {
                         // move to next screen
                         viewPager.setCurrentItem(current);
                     } else {
@@ -242,7 +248,7 @@ public class IntroActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return about_title_array.length;
+            return steps.size();
         }
 
         @Override
