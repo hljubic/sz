@@ -36,6 +36,8 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ba.hljubic.jsonorm.JsonOrm;
+import ba.sum.sum.models.Institution;
 import ba.sum.sum.models.Step;
 import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
@@ -65,6 +67,8 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        JsonOrm.with(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getBoolean("firstime", true)) {
@@ -129,6 +133,18 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         Volley.newRequestQueue(getApplicationContext()).add(request);
+
+        StringRequest institutionsRequest = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<Institution> list = new Gson().fromJson(response, new TypeToken<List<Institution>>() {
+                }.getType());
+
+                Institution.saveAllAsync(Institution.class, list);
+            }
+        }, null);
+
+        Volley.newRequestQueue(this).add(institutionsRequest);
     }
 
     public void skipIntro() {
@@ -146,7 +162,6 @@ public class IntroActivity extends AppCompatActivity {
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
 
         (dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,18 +221,9 @@ public class IntroActivity extends AppCompatActivity {
             content.setHtml(step.getContent());
 
             Glide.with(getApplicationContext()).load(step.getImage()).into(image);
-            ((TextView) view.findViewById(R.id.title)).setText(steps.get(position).getTitle());
-            ((TextView) view.findViewById(R.id.description)).setText(steps.get(position).getContent());
-
-            Glide.with(getApplicationContext()).load(steps.get(position).getImage()).into((ImageView) view.findViewById(R.id.image));
 
             btnNext = view.findViewById(R.id.btn_next);
-
-            if (position == steps.size() - 1) {
-                btnNext.setText(steps.get(position).getButton());
-            } else {
-                btnNext.setText(steps.get(position).getButton());
-            }
+            btnNext.setText(steps.get(position).getButton());
 
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override

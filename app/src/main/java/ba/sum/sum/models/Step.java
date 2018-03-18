@@ -2,8 +2,6 @@ package ba.sum.sum.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 import ba.hljubic.jsonorm.JsonTable;
 import ba.sum.sum.utils.Constants;
 
@@ -18,8 +16,6 @@ public class Step extends JsonTable<Step> {
     private String button;
     @SerializedName("user_id")
     private int userId;
-
-    private List<Step> items;
 
     public String getTitle() {
         return title;
@@ -59,13 +55,5 @@ public class Step extends JsonTable<Step> {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public List<Step> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Step> items) {
-        this.items = items;
     }
 }

@@ -7,7 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,14 +21,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.models.Institution;
+import ba.sum.sum.models.Poi;
+import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
+    private static final String NOT_FACULTY = "not_faculty";
+    private List<Poi> pois;
     private List<Institution> institutions;
 
     @Override
@@ -35,10 +50,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        pois = new ArrayList<>();
         institutions = Institution.listAll(Institution.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Pregled fakulteta na karti");
+        toolbar.setTitle("Pregled lokacija");
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
@@ -66,6 +82,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             institution.getLongitude());
 
                     googleMap.addMarker(new MarkerOptions().position(position)
+                            .title("faculty")
                             .snippet(String.valueOf(counter)));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -74,14 +91,55 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             counter++;
         }
+
+        boolean onlyFaculties = getIntent().getExtras().getBoolean("only_faculties", true);
+
+        if (!onlyFaculties) {
+            StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "lokacije", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    ArrayList<Poi> list = new Gson().fromJson(response, new TypeToken<List<Poi>>() {
+                    }.getType());
+
+                    int counter = 0;
+
+                    for (Poi poi : list) {
+                        try {
+                            LatLng position = new LatLng(poi.getLatitude(),
+                                    poi.getLongitude());
+
+                            googleMap.addMarker(new MarkerOptions().position(position)
+                                    .title(NOT_FACULTY)
+                                    .snippet(String.valueOf(counter)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        counter++;
+                    }
+
+                    pois.clear();
+                    pois.addAll(list);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(MapsActivity.this, R.string.cant_connect, Toast.LENGTH_LONG).show();
+                }
+            });
+
+            Volley.newRequestQueue(this).add(request);
+        }
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Intent intent = new Intent(MapsActivity.this, DetailsActivity.class);
-        intent.putExtra("institution_id", institutions.get(
-                Integer.valueOf(marker.getSnippet())).getId());
-        startActivity(intent);
+        if (!marker.getSnippet().equals(NOT_FACULTY)) {
+            Intent intent = new Intent(MapsActivity.this, DetailsActivity.class);
+            intent.putExtra("institution_id", institutions.get(
+                    Integer.valueOf(marker.getSnippet())).getId());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -102,7 +160,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
     class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         private final View view;
@@ -117,13 +174,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             TextView subtitle = view.findViewById(R.id.tv_subtitle);
             TextView subtitle2 = view.findViewById(R.id.tv_subtitle2);
             TextView subtitle3 = view.findViewById(R.id.tv_subtitle3);
+            HtmlTextView content = view.findViewById(R.id.tv_content);
 
-            Institution institution = institutions.get(Integer.valueOf(marker.getSnippet()));
+            if (!marker.getTitle().equals(NOT_FACULTY)) {
+                Institution institution = institutions.get(Integer.valueOf(marker.getSnippet()));
 
-            title.setText(institution.getName());
-            subtitle.setText(institution.getAddress());
-            subtitle2.setText(institution.getPhone());
-            subtitle3.setText(institution.getWeb());
+                title.setText(institution.getName());
+                subtitle.setText(institution.getAddress());
+                subtitle2.setText(institution.getPhone());
+                subtitle3.setText(institution.getWeb());
+            } else {
+                Poi poi = pois.get(Integer.valueOf(marker.getSnippet()));
+                title.setText(poi.getTitle());
+                content.setHtml(poi.getDesc());
+                content.setVisibility(View.VISIBLE);
+
+                subtitle.setVisibility(View.GONE);
+                subtitle2.setVisibility(View.GONE);
+                subtitle3.setVisibility(View.GONE);
+            }
 
             return view;
         }
@@ -133,8 +202,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // TODO Auto-generated method stub
             return null;
         }
-
     }
-
 }
-
