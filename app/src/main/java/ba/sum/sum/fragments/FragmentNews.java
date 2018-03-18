@@ -22,7 +22,6 @@ import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterNews;
-import ba.sum.sum.models.Institution;
 import ba.sum.sum.models.Post;
 import ba.sum.sum.utils.Constants;
 
@@ -69,7 +68,7 @@ public class FragmentNews extends Fragment {
                 ArrayList<Post> list = new Gson().fromJson(response, new TypeToken<List<Post>>() {
                 }.getType());
 
-                Post.saveAllAsync(Institution.class, list);
+                Post.saveAllAsync(Post.class, list);
 
                 posts.clear();
                 posts.addAll(list);

@@ -31,7 +31,7 @@ public class RectorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_toolbar_collapse);
+        setContentView(R.layout.activity_rector);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Rektorova riječ");
