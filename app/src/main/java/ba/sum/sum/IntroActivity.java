@@ -176,7 +176,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void bottomProgressDots(int current_index) {
-        LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
+        LinearLayout dotsLayout = findViewById(R.id.layoutDots);
         ImageView[] dots = new ImageView[steps.size()];
 
         dotsLayout.removeAllViews();

@@ -163,4 +163,10 @@ public class Institution extends JsonTable<Institution> {
 
         return "";
     }
+
+    public boolean isLiked() {
+        Favorite favorite = Favorite.findByInstitutionId(this.getId());
+
+        return favorite != null && favorite.isLiked();
+    }
 }
