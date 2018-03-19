@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DetailsActivity">
     <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_navigate"
-        android:icon="@drawable/ic_place"
+        android:icon="@drawable/ic_near_me"
         android:orderInCategory="200"
         android:title="Upute"
         app:showAsAction="ifRoom" />

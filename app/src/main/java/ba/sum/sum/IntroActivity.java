@@ -1,5 +1,6 @@
 package ba.sum.sum;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,16 +14,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ba.hljubic.jsonorm.JsonOrm;
+import ba.sum.sum.models.Institution;
+import ba.sum.sum.models.Step;
+import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
 public class IntroActivity extends AppCompatActivity {
-    private static final int MAX_STEP = 4;
-    //  viewpager change listener
+    private List<Step> steps;
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -40,35 +61,16 @@ public class IntroActivity extends AppCompatActivity {
 
         }
     };
-    private SharedPreferences sharedPreferences;
     private ViewPager viewPager;
-    private Button btnSkip;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private String about_title_array[] = {
-            "Sveučilište u Mostaru",
-            "Studentski zbor",
-            "Studentski centar",
-            "Sveučilište u Mostaru"
-
-    };
-    private String about_description_array[] = {
-            "Sveučilište u Mostaru sadrži deset fakulteta i jednu akademiju.",
-            "Studentski zbor je najviše predstavničko tijelo studenata u Mostaru.",
-            "Studentski centar radi na unaprijeđenju studentskih standarda.",
-            "Hvala Vam što ste odabrali SUM. Sretno u daljnjem obrazovanju!",
-    };
-    private int about_images_array[] = {
-            R.drawable.intro_sum,
-            R.drawable.intro_sz,
-            R.drawable.intro_sc,
-            R.drawable.intro_jjs
-    };
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        JsonOrm.with(this);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getBoolean("firstime", true)) {
             sharedPreferences.edit().putBoolean("firstime", false).apply();
         } else {
@@ -81,8 +83,10 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        btnSkip = findViewById(R.id.btn_skip);
+        steps = new ArrayList<>();
+
+        viewPager = findViewById(R.id.view_pager);
+        Button btnSkip = findViewById(R.id.btn_skip);
 
         // adding bottom dots
         bottomProgressDots(0);
@@ -92,6 +96,8 @@ public class IntroActivity extends AppCompatActivity {
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+
+        getData();
 
         Tools.setSystemBarColor(this, R.color.grey_20);
 
@@ -103,14 +109,75 @@ public class IntroActivity extends AppCompatActivity {
         });
     }
 
+    public void getData() {
+
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "koraci", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                List<Step> list = new Gson().fromJson(response, new TypeToken<List<Step>>() {
+                }.getType());
+
+                steps.clear();
+                steps.addAll(list);
+
+                myViewPagerAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), R.string.cant_connect, Toast.LENGTH_LONG).show();
+
+                showErrorDialog();
+            }
+
+        });
+
+        Volley.newRequestQueue(getApplicationContext()).add(request);
+
+        StringRequest institutionsRequest = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ArrayList<Institution> list = new Gson().fromJson(response, new TypeToken<List<Institution>>() {
+                }.getType());
+
+                Institution.saveAllAsync(Institution.class, list);
+            }
+        }, null);
+
+        Volley.newRequestQueue(this).add(institutionsRequest);
+    }
+
     public void skipIntro() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 
+    private void showErrorDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_warning);
+        dialog.setCancelable(false);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        (dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
     private void bottomProgressDots(int current_index) {
-        LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        ImageView[] dots = new ImageView[MAX_STEP];
+        LinearLayout dotsLayout = findViewById(R.id.layoutDots);
+        ImageView[] dots = new ImageView[steps.size()];
 
         dotsLayout.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
@@ -145,23 +212,24 @@ public class IntroActivity extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_intro, container, false);
-            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
-            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
-            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);
+            ImageView image = view.findViewById(R.id.image);
+            TextView title = view.findViewById(R.id.title);
+            HtmlTextView content = view.findViewById(R.id.description);
+            Step step = steps.get(position);
 
-            btnNext = (Button) view.findViewById(R.id.btn_next);
+            title.setText(step.getTitle());
+            content.setHtml(step.getContent());
 
-            if (position == about_title_array.length - 1) {
-                btnNext.setText("Pokreni aplikaciju");
-            } else {
-                btnNext.setText("Dalje");
-            }
+            Glide.with(getApplicationContext()).load(step.getImage()).into(image);
+
+            btnNext = view.findViewById(R.id.btn_next);
+            btnNext.setText(steps.get(position).getButton());
 
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int current = viewPager.getCurrentItem() + 1;
-                    if (current < MAX_STEP) {
+                    if (current < steps.size()) {
                         // move to next screen
                         viewPager.setCurrentItem(current);
                     } else {
@@ -177,7 +245,7 @@ public class IntroActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return about_title_array.length;
+            return steps.size();
         }
 
         @Override

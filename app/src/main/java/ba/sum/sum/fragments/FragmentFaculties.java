@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -35,7 +36,7 @@ import ba.sum.sum.utils.Constants;
 public class FragmentFaculties extends Fragment {
 
     private Gson gson;
-    private ArrayList<Institution> institutions;
+    private List<Institution> institutions;
     private AdapterFaculties mAdapter;
     private SwipeRefreshLayout swipe_refresh;
 
@@ -61,6 +62,14 @@ public class FragmentFaculties extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
+        List<Institution> list = Institution.listAll(Institution.class);
+
+        for (Institution institution : list) {
+            if (institution.getInstitutionId() == 1) {
+                institutions.add(institution);
+            }
+        }
+
         mAdapter = new AdapterFaculties(getActivity(), institutions);
         recyclerView.setAdapter(mAdapter);
 
@@ -73,7 +82,9 @@ public class FragmentFaculties extends Fragment {
             }
         });
 
-        getData();
+        if (institutions.size() == 0) {
+            getData();
+        }
 
         swipe_refresh = root.findViewById(R.id.swipe_refresh_layout);
         swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,7 +107,6 @@ public class FragmentFaculties extends Fragment {
     }
 
     public void getData() {
-
         StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -141,9 +151,19 @@ public class FragmentFaculties extends Fragment {
 
         });
 
-        Volley.newRequestQueue(getActivity()).add(request);
-    }
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
 
+        /*
+        queue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        */
+
+        queue.add(request);
+    }
 
     private void showErrorDialog() {
         final Dialog dialog = new Dialog(getActivity());
@@ -170,9 +190,6 @@ public class FragmentFaculties extends Fragment {
     }
 
     public void onPageFinished() {
-
         swipe_refresh.setRefreshing(false);
-
     }
-
 }

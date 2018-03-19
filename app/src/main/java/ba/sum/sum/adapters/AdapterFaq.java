@@ -10,30 +10,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.models.Faq;
-import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.Tools;
 import ba.sum.sum.utils.ViewAnimation;
 
 public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Institution> items;
     private List<Faq> faqs;
-
-
-    private Context ctx;
-    private OnItemClickListener mOnItemClickListener;
 
     public AdapterFaq(Context ctx, List<Faq> faqs) {
         this.faqs = faqs;
-        this.ctx = ctx;
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mOnItemClickListener = mItemClickListener;
     }
 
     @Override
@@ -51,15 +42,7 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             final OriginalViewHolder view = (OriginalViewHolder) holder;
             final Faq faq = faqs.get(position);
             view.name.setText(faq.getPitanje());
-
-            view.lyt_parent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnItemClickListener != null) {
-                        // mOnItemClickListener.onItemClick(view, faqs.get(position), position);
-                    }
-                }
-            });
+            view.tv_content.setHtml(faq.getOdgovor());
 
             view.bt_expand.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,15 +51,10 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     faqs.get(position).expanded = show;
                 }
             });
-            // Za faq
-            view.bt_more.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });
+            view.image.setVisibility(View.GONE);
+            view.bt_more.setVisibility(View.GONE);
 
-            // void recycling view
             if (faq.expanded) {
                 view.lyt_expand.setVisibility(View.VISIBLE);
             } else {
@@ -98,11 +76,7 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return items != null ? items.size() : faqs.size();
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, Institution obj, int position);
+        return faqs != null ? faqs.size() : faqs.size();
     }
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
@@ -112,15 +86,18 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public View lyt_expand;
         public View lyt_parent;
         public Button bt_more;
+        public HtmlTextView tv_content;
+
 
         public OriginalViewHolder(View v) {
             super(v);
-            image = (ImageView) v.findViewById(R.id.image);
-            name = (TextView) v.findViewById(R.id.name);
-            bt_expand = (ImageButton) v.findViewById(R.id.bt_expand);
-            lyt_expand = (View) v.findViewById(R.id.lyt_expand);
-            lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            image = v.findViewById(R.id.image);
+            name = v.findViewById(R.id.name);
+            bt_expand = v.findViewById(R.id.bt_expand);
+            lyt_expand = v.findViewById(R.id.lyt_expand);
+            lyt_parent = v.findViewById(R.id.lyt_parent);
             bt_more = v.findViewById(R.id.bt_more);
+            tv_content = v.findViewById(R.id.tv_content);
         }
     }
 

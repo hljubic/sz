@@ -60,7 +60,6 @@
         android:background="@color/grey_3"
         android:orientation="vertical"
         android:visibility="gone">
-        main
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/tv_content"

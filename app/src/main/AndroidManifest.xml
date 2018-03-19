@@ -35,6 +35,9 @@
         <activity
             android:name=".RectorActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FaqActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>

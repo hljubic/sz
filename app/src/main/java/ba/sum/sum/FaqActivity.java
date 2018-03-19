@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import ba.sum.sum.adapters.AdapterFaq;
 import ba.sum.sum.models.Faq;
 import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.LineItemDecoration;
+import ba.sum.sum.utils.Tools;
 
 public class FaqActivity extends AppCompatActivity {
     Gson gson;
@@ -30,7 +32,7 @@ public class FaqActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_expand);
+        setContentView(R.layout.activity_faq);
 
         gson = new Gson();
         faqs = new ArrayList<>();
@@ -70,6 +72,23 @@ public class FaqActivity extends AppCompatActivity {
         });
 
         Volley.newRequestQueue(getApplicationContext()).add(faqRequest);
+
+        Tools.setSystemBarColor(this, R.color.colorPrimaryDark);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Česta pitanja");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
 

@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import ba.hljubic.jsonorm.JsonTable;
+import ba.hljubic.jsonorm.annotations.InFile;
 import ba.sum.sum.utils.Constants;
 
 /**
  * Created by HP_PC on 8.3.2018..
  */
 
+@InFile("institutions.json")
 public class Institution extends JsonTable<Institution> {
     public String name;
     public boolean expanded;
@@ -160,5 +162,11 @@ public class Institution extends JsonTable<Institution> {
         }
 
         return "";
+    }
+
+    public boolean isLiked() {
+        Favorite favorite = Favorite.findByInstitutionId(this.getId());
+
+        return favorite != null && favorite.isLiked();
     }
 }

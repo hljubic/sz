@@ -10,7 +10,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_maps"
-        android:icon="@drawable/ic_near_me"
+        android:icon="@drawable/ic_place"
         android:orderInCategory="200"
         android:title="Karta"
         app:showAsAction="ifRoom" />
