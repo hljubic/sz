@@ -73,6 +73,7 @@ public class FragmentFaculties extends Fragment {
         mAdapter = new AdapterFaculties(getActivity(), institutions);
         recyclerView.setAdapter(mAdapter);
 
+
         mAdapter.setOnItemClickListener(new AdapterFaculties.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Institution institution, int position) {

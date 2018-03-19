@@ -72,14 +72,35 @@ public class FragmentAbout extends Fragment {
         viewPager = root.findViewById(R.id.pager);
         adapterImageSlider = new AdapterImageSlider(getActivity(), new ArrayList<Image>());
 
-        final List<Image> items = new ArrayList<>();
-        for (int i = 0; i < array_image_place.length; i++) {
-            Image obj = new Image();
-            obj.image = array_image_place[i];
-            obj.name = array_title_place[i];
-            obj.brief = array_subtitle_place[i];
-            items.add(obj);
+
+        final String[] arr_img =new String[institution.getImages().size()];
+        for (int i = 0; i < institution.getImages().size(); i++)
+        {
+            arr_img[i]=institution.getImages().get(i).getFile();
         }
+
+
+        final List<Image> items = new ArrayList<>();
+
+        if(arr_img.length!=0){
+            for (int i = 0; i < arr_img.length; i++) {
+                Image obj = new Image();
+                obj.image = arr_img[i];
+                obj.name = institution.getName();
+                obj.brief = institution.getAddress();
+                items.add(obj);
+            }}
+        else {
+            for (int i = 0; i < array_image_place.length; i++) {
+                Image obj = new Image();
+                obj.image = array_image_place[i];
+                obj.name = array_title_place[i];
+                obj.brief = array_subtitle_place[i];
+                items.add(obj);
+            }
+        }
+
+
 
         adapterImageSlider.setItems(items);
         viewPager.setAdapter(adapterImageSlider);
