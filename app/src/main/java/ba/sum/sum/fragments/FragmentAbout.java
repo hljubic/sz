@@ -74,6 +74,7 @@ public class FragmentAbout extends Fragment {
 
 
         final String[] arr_img =new String[institution.getImages().size()];
+
         for (int i = 0; i < institution.getImages().size(); i++)
         {
             arr_img[i]=institution.getImages().get(i).getFile();

@@ -1,6 +1,7 @@
 package ba.sum.sum;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -133,6 +134,12 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
                 } else if (id == R.id.nav_faq) {
                     Intent intent = new Intent(MainActivity.this, FaqActivity.class);
+                    startActivity(intent);
+                }
+                else if (id == R.id.nav_iss) {
+
+                    Uri uri = Uri.parse("https://is.sve-mo.ba:4443/ords/f?p=1101:LOGIN:7759647099037");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
             }

@@ -13,5 +13,7 @@
     <dimen name="spacing_mlarge">20dp</dimen>
     <dimen name="spacing_mxlarge">25dp</dimen>
     <dimen name="spacing_xlarge">35dp</dimen>
+    <dimen name="spacing_smlarge">18dp</dimen>
+    <dimen name="spacing_xmedium">7dp</dimen>
 
 </resources>

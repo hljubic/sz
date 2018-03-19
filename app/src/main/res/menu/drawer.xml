@@ -41,6 +41,10 @@
                 android:id="@+id/nav_faq"
                 android:icon="@drawable/ic_question"
                 android:title="Česta pitanja" />
+            <item
+                android:id="@+id/nav_iss"
+                android:icon="@drawable/ic_iss"
+                android:title="ISS sustav" />
         </menu>
     </item>
 
