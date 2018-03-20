@@ -38,7 +38,6 @@
             android:name=".FaqActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -63,6 +62,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDIusST4JMf443cc1zltSu1Qqj2a0YSJ0I" />
 
+        <activity android:name=".NewsActivity"></activity>
     </application>
 
 </manifest>

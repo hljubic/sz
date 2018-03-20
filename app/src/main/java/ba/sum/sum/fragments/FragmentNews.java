@@ -1,5 +1,6 @@
 package ba.sum.sum.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+import ba.sum.sum.NewsActivity;
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterNews;
 import ba.sum.sum.models.Post;
@@ -54,6 +56,18 @@ public class FragmentNews extends Fragment {
 
         mAdapter = new AdapterNews(getActivity(), posts);
         recyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new AdapterNews.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Post post, int position) {
+
+                Intent intent = new Intent(getContext(), NewsActivity.class);
+
+                intent.putExtra("user_id", post.getId());
+
+                startActivity(intent);
+            }
+        });
 
         getData();
 

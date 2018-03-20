@@ -72,6 +72,7 @@ public class FragmentAbout extends Fragment {
         viewPager = root.findViewById(R.id.pager);
         adapterImageSlider = new AdapterImageSlider(getActivity(), new ArrayList<Image>());
 
+        final List<Image> items = new ArrayList<>();
 
         final String[] arr_img =new String[institution.getImages().size()];
 
@@ -79,9 +80,6 @@ public class FragmentAbout extends Fragment {
         {
             arr_img[i]=institution.getImages().get(i).getFile();
         }
-
-
-        final List<Image> items = new ArrayList<>();
 
         if(arr_img.length!=0){
             for (int i = 0; i < arr_img.length; i++) {

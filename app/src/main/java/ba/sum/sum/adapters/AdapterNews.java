@@ -49,7 +49,6 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         OriginalViewHolder view = (OriginalViewHolder) holder;
 
         Post post = items.get(position);
-
         view.title.setText(post.getTitle());
         view.date.setText(post.getCreatedAt());
         view.body.setText(Tools.stripHtml(post.getContent()));

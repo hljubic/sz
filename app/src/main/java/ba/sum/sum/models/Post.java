@@ -12,6 +12,7 @@ import ba.sum.sum.utils.Constants;
  */
 
 public class Post extends JsonTable<Post> {
+
     private String title;
     private String content;
     private String link;
@@ -20,6 +21,7 @@ public class Post extends JsonTable<Post> {
     @SerializedName("created_at")
     private String createdAt;
     private List<Document> images;
+
 
     public String getTitle() {
         return title;
