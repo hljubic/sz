@@ -62,7 +62,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDIusST4JMf443cc1zltSu1Qqj2a0YSJ0I" />
 
-        <activity android:name=".NewsActivity"></activity>
+        <activity android:name=".PostActivity"></activity>
     </application>
 
 </manifest>

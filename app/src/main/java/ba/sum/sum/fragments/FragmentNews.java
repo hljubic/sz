@@ -21,7 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.sum.sum.NewsActivity;
+import ba.sum.sum.PostActivity;
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterNews;
 import ba.sum.sum.models.Post;
@@ -61,7 +61,7 @@ public class FragmentNews extends Fragment {
             @Override
             public void onItemClick(View view, Post post, int position) {
 
-                Intent intent = new Intent(getContext(), NewsActivity.class);
+                Intent intent = new Intent(getContext(), PostActivity.class);
 
                 intent.putExtra("user_id", post.getId());
 

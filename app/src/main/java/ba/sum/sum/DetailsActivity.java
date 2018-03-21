@@ -28,19 +28,17 @@ public class DetailsActivity extends AppCompatActivity {
     private View web_view;
     private View contact_view;
     private View map_view;
+    private FloatingActionButton fab_add;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-
-
-
         if (getIntent().getExtras() == null)
             return;
 
         try {
-
             String id = getIntent().getExtras().getString("institution_id", "");
             institution = Institution.findParentOrChildById(id);
 
@@ -65,10 +63,10 @@ public class DetailsActivity extends AppCompatActivity {
         parent_view = findViewById(android.R.id.content);
         back_drop = findViewById(R.id.back_drop);
 
-        final FloatingActionButton fab_web = (FloatingActionButton) findViewById(R.id.fab_web);
-        final FloatingActionButton fab_contact = (FloatingActionButton) findViewById(R.id.fab_contact);
-        final FloatingActionButton fab_map = (FloatingActionButton) findViewById(R.id.fab_map);
-        final FloatingActionButton fab_add = (FloatingActionButton) findViewById(R.id.fab_add);
+        final FloatingActionButton fab_web = findViewById(R.id.fab_web);
+        final FloatingActionButton fab_contact = findViewById(R.id.fab_contact);
+        final FloatingActionButton fab_map = findViewById(R.id.fab_map);
+        fab_add = findViewById(R.id.fab_add);
 
         web_view = findViewById(R.id.lyt_web);
         contact_view = findViewById(R.id.lyt_contact);
@@ -174,7 +172,7 @@ public class DetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void navigate(){
+    private void navigate() {
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + institution.getLatitude() + ","
                 + institution.getLongitude() + "&mode=w");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -186,5 +184,14 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (rotate) {
+            toggleFabMode(fab_add);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
