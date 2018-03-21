@@ -19,6 +19,7 @@ public class Institution extends JsonTable<Institution> {
     private String logo;
     private String address;
     private String web;
+    private String email;
     private String phone;
     private String type;
     private String latitude;
@@ -30,7 +31,7 @@ public class Institution extends JsonTable<Institution> {
     private List<Document> documents;
     private List<Institution> children;
 
-    public Institution() {
+    public Institution(String s) {
     }
 
     public static Institution findParentOrChildById(String id) {
@@ -168,5 +169,13 @@ public class Institution extends JsonTable<Institution> {
         Favorite favorite = Favorite.findByInstitutionId(this.getId());
 
         return favorite != null && favorite.isLiked();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
