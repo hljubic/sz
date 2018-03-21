@@ -160,12 +160,13 @@ public class MainActivity extends AppCompatActivity
         (dialog.findViewById(R.id.bt_send)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Institution selectedInstitution = institutions.get(listFaculties.getSelectedItemPosition());
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto", "", null));
+                        "mailto", selectedInstitution.getEmail(), null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, naslov.getText().toString());
                 emailIntent.putExtra(Intent.EXTRA_TEXT, sadrzaj.getText().toString());
-                startActivity(Intent.createChooser(emailIntent, "Pošalji email..."));
-
+                startActivity(Intent.createChooser(emailIntent, ""));
             }
         });
 
