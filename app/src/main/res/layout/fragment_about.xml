@@ -127,31 +127,20 @@
                     android:layout_height="wrap_content"
                     android:text="Osnovne informacije"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/grey_90" />
+                    android:textColor="@color/grey_90"
+                    android:visibility="gone" />
+
+                <im.delight.android.webview.AdvancedWebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <org.sufficientlysecure.htmltextview.HtmlTextView
                     android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textAppearance="@android:style/TextAppearance.Small" />
-
-                <!--
-                <TextView
-                    android:id="@+id/tv_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_middle"
-                    android:lineSpacingExtra="@dimen/spacing_small"
-                    android:text="@string/fpmoz"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60" />
-
-                    -->
-
-
+                    android:visibility="gone" />
             </LinearLayout>
-
-
 
             <View
                 android:layout_width="0dp"

@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
         adapter.addFragment(FragmentFaculties.newInstance(), "Naslovnica");
         adapter.addFragment(FragmentNews.newInstance(2), "Novosti");
-        adapter.addFragment(FragmentWebView.newInstance(Constants.BASE_URL + "tweets.html"), "Twitter");
+        adapter.addFragment(FragmentWebView.newInstance(Constants.BASE_URL + "fb.html"), "FACEBOOK");
         viewPager.setAdapter(adapter);
     }
 
@@ -214,13 +214,13 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
                 }
                 else if (id == R.id.nav_iss) {
-
+                    // TODO: Čupati sa API-ja
                     Uri uri = Uri.parse("https://is.sve-mo.ba:4443/ords/f?p=1101:LOGIN:7759647099037");
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
             }
-        }, 200);
+        }, 300);
 
         drawer.closeDrawer(GravityCompat.START);
         return true;

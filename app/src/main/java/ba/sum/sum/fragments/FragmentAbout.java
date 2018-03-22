@@ -20,6 +20,7 @@ import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterImageSlider;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.models.Institution;
+import im.delight.android.webview.AdvancedWebView;
 
 public class FragmentAbout extends Fragment {
 
@@ -57,6 +58,9 @@ public class FragmentAbout extends Fragment {
     private void initComponent(final View root) {
         HtmlTextView content = root.findViewById(R.id.tv_content);
         content.setHtml(institution.getContent());
+
+        AdvancedWebView webView = root.findViewById(R.id.webview);
+        webView.loadHtml(institution.getContent());
 
         String[] array_image_place = new String[]{institution.getLogo()};
         String[] array_title_place = new String[]{institution.getName()};
