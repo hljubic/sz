@@ -2,6 +2,7 @@ package ba.sum.sum.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ba.hljubic.jsonorm.JsonTable;
@@ -14,6 +15,11 @@ import ba.sum.sum.utils.Constants;
 
 @InFile("institutions.json")
 public class Institution extends JsonTable<Institution> {
+    private static final String TYPE_UNDEGRADUATE = "undergraduate";
+    private static final String TYPE_GRADUATE = "graduate";
+    private static final String TYPE_POSTGRADUATE = "postgraduate";
+    private static final String TYPE_EXPERT = "expert";
+    private static final String TYPE_OTHER = "other";
     public String name;
     public boolean expanded;
     private String logo;
@@ -25,13 +31,22 @@ public class Institution extends JsonTable<Institution> {
     private String latitude;
     private String longitude;
     private String content;
+    private String contact;
+    @SerializedName("faculty_type")
+    private String facultyType;
     @SerializedName("institution_id")
     private int institutionId;
+    private boolean section;
     private List<Document> images;
     private List<Document> documents;
     private List<Institution> children;
 
-    public Institution(String s) {
+    public Institution() {
+    }
+
+    public Institution(String name) {
+        this.name = name;
+        this.section = true;
     }
 
     public static Institution findParentOrChildById(String id) {
@@ -118,11 +133,27 @@ public class Institution extends JsonTable<Institution> {
     }
 
     public String getContent() {
-        return content;
+        return content == null ? "" : content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getFacultyType() {
+        return facultyType;
+    }
+
+    public void setFacultyType(String facultyType) {
+        this.facultyType = facultyType;
     }
 
     public int getInstitutionId() {
@@ -149,6 +180,63 @@ public class Institution extends JsonTable<Institution> {
         this.children = children;
     }
 
+    public List<Institution> getChildrenSectioned() {
+        List<Institution> undegraduate = new ArrayList<>();
+        List<Institution> graduate = new ArrayList<>();
+        List<Institution> postgraduate = new ArrayList<>();
+        List<Institution> expert = new ArrayList<>();
+        List<Institution> other = new ArrayList<>();
+
+        for (Institution institution : children) {
+            switch (institution.getFacultyType()) {
+                case TYPE_UNDEGRADUATE:
+                    undegraduate.add(institution);
+                    break;
+                case TYPE_GRADUATE:
+                    graduate.add(institution);
+                    break;
+                case TYPE_POSTGRADUATE:
+                    postgraduate.add(institution);
+                    break;
+                case TYPE_EXPERT:
+                    expert.add(institution);
+                    break;
+                case TYPE_OTHER:
+                    other.add(institution);
+                    break;
+            }
+        }
+
+        List<Institution> sectionedChildren = new ArrayList<>();
+
+        if (undegraduate.size() > 0) {
+            sectionedChildren.add(new Institution("Preddiplomski studij"));
+            sectionedChildren.addAll(undegraduate);
+        }
+
+        if (graduate.size() > 0) {
+            sectionedChildren.add(new Institution("Diplomski studij"));
+            sectionedChildren.addAll(graduate);
+        }
+
+        if (postgraduate.size() > 0) {
+            sectionedChildren.add(new Institution("Postdiplomski studij"));
+            sectionedChildren.addAll(postgraduate);
+        }
+
+        if (expert.size() > 0) {
+            sectionedChildren.add(new Institution("Stručni studij"));
+            sectionedChildren.addAll(expert);
+        }
+
+        if (other.size() > 0) {
+            sectionedChildren.add(new Institution("Ostalo"));
+            sectionedChildren.addAll(other);
+        }
+
+        return sectionedChildren;
+    }
+
     public List<Document> getDocuments() {
         return documents;
     }
@@ -169,6 +257,14 @@ public class Institution extends JsonTable<Institution> {
         Favorite favorite = Favorite.findByInstitutionId(this.getId());
 
         return favorite != null && favorite.isLiked();
+    }
+
+    public boolean isSection() {
+        return section;
+    }
+
+    public void setSection(boolean section) {
+        this.section = section;
     }
 
     public String getEmail() {

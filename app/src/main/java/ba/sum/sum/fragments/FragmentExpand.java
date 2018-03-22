@@ -9,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.List;
-
 import ba.sum.sum.R;
-import ba.sum.sum.adapters.AdapterExpand;
 import ba.sum.sum.adapters.AdapterExpandDocument;
-import ba.sum.sum.models.Document;
+import ba.sum.sum.adapters.AdapterListSectioned;
 import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.LineItemDecoration;
 
@@ -32,7 +29,7 @@ public class FragmentExpand extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_expand, container, false);
+        View root = inflater.inflate(R.layout.fragment_recycler_view, container, false);
 
         initComponent(root);
 
@@ -40,21 +37,18 @@ public class FragmentExpand extends Fragment {
     }
 
     private void initComponent(final View root) {
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new LineItemDecoration(getActivity(), LinearLayout.VERTICAL));
         recyclerView.setHasFixedSize(true);
 
         Institution institution = Institution.findParentOrChildById(getActivity().getIntent().getExtras().getString("institution_id"));
-        List<Institution> items = institution.getChildren();
-        List<Document> documents = institution.getDocuments();
 
         if (getArguments().getBoolean(ARG_STUDIES)) {
-            AdapterExpand mAdapter = new AdapterExpand(getActivity(), items);
+            AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildrenSectioned());
             recyclerView.setAdapter(mAdapter);
-
         } else {
-            AdapterExpandDocument mAdapterDocument = new AdapterExpandDocument(getActivity(), documents);
+            recyclerView.addItemDecoration(new LineItemDecoration(getActivity(), LinearLayout.VERTICAL));
+            AdapterExpandDocument mAdapterDocument = new AdapterExpandDocument(getActivity(), institution.getDocuments());
             recyclerView.setAdapter(mAdapterDocument);
         }
 

@@ -4,17 +4,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-
-import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,19 +46,14 @@ public class FragmentAbout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
 
-        Log.wtf("aaaa", String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)) + "---");
         institution = Institution.findParentOrChildById(String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
 
-        Log.wtf("aaaa", new Gson().toJson(institution));
         initComponent(root);
 
         return root;
     }
 
     private void initComponent(final View root) {
-        HtmlTextView content = root.findViewById(R.id.tv_content);
-        content.setHtml(institution.getContent() == null ? "" : institution.getContent());
-
         AdvancedWebView webView = root.findViewById(R.id.webview);
         webView.loadHtml(institution.getContent());
 
