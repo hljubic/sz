@@ -37,12 +37,8 @@ public class FragmentNews extends Fragment {
     private ArrayList<Post> posts;
     private AdapterNews mAdapter;
 
-    public static FragmentNews newInstance(int sectionNumber) {
-        FragmentNews fragment = new FragmentNews();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+    public static FragmentNews newInstance() {
+        return new FragmentNews();
     }
 
     @Override

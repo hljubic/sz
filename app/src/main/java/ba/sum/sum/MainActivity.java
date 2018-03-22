@@ -23,16 +23,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.adapters.AdapterPager;
@@ -45,8 +38,6 @@ import ba.sum.sum.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private List<Institution> institutions;
-    private AdapterSpinner adapterSpinner;
     private DrawerLayout drawer;
 
     @Override
@@ -55,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        institutions = new ArrayList<>();
+
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -79,9 +70,9 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
-        adapter.addFragment(FragmentFaculties.newInstance(), "Naslovnica");
-        adapter.addFragment(FragmentNews.newInstance(2), "Novosti");
-        adapter.addFragment(FragmentWebView.newInstance(Constants.BASE_URL + "fb.html"), "FACEBOOK");
+        adapter.addFragment(FragmentFaculties.newInstance(), "Fakulteti");
+        adapter.addFragment(FragmentNews.newInstance(), "Novosti");
+        adapter.addFragment(FragmentWebView.newInstance(Constants.BASE_URL + "tweets.html"), "TWITTER");
         viewPager.setAdapter(adapter);
     }
 
@@ -132,27 +123,12 @@ public class MainActivity extends AppCompatActivity
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-        final AppCompatSpinner listFaculties = (AppCompatSpinner) dialog.findViewById(R.id.con_faculties);
-        final EditText naslov = (EditText) dialog.findViewById(R.id.con_naslov);
-        final AppCompatEditText sadrzaj = (AppCompatEditText) dialog.findViewById(R.id.con_sadrzaj);
+        final AppCompatSpinner listFaculties = dialog.findViewById(R.id.con_faculties);
+        final EditText naslov = dialog.findViewById(R.id.con_naslov);
+        final AppCompatEditText sadrzaj = dialog.findViewById(R.id.con_sadrzaj);
 
-        final StringRequest institutionsRequest = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ArrayList<Institution> list = new Gson().fromJson(response, new TypeToken<List<Institution>>() {
-                }.getType());
-
-                Institution.saveAllAsync(Institution.class, list);
-                institutions.clear();
-                institutions.addAll(list);
-
-                adapterSpinner.notifyDataSetChanged();
-            }
-        }, null);
-
-        Volley.newRequestQueue(this).add(institutionsRequest);
-
-        adapterSpinner = new AdapterSpinner(getApplicationContext(), institutions);
+        final List<Institution> institutions = Institution.listAll(Institution.class);
+        AdapterSpinner adapterSpinner = new AdapterSpinner(getApplicationContext(), institutions);
         adapterSpinner.setDropDownViewResource(R.layout.spinner);
         listFaculties.setAdapter(adapterSpinner);
         listFaculties.setSelection(0);
@@ -170,9 +146,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         dialog.show();
-
     }
 
     @Override
@@ -206,14 +180,11 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("only_faculties", false);
                     startActivity(intent);
                 } else if (id == R.id.nav_contact) {
-                    //dialog konakt
                     showDialog();
-
                 } else if (id == R.id.nav_faq) {
                     Intent intent = new Intent(MainActivity.this, FaqActivity.class);
                     startActivity(intent);
-                }
-                else if (id == R.id.nav_iss) {
+                } else if (id == R.id.nav_iss) {
                     // TODO: Čupati sa API-ja
                     Uri uri = Uri.parse("https://is.sve-mo.ba:4443/ords/f?p=1101:LOGIN:7759647099037");
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);

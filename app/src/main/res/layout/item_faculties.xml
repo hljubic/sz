@@ -93,6 +93,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/grey_40"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/ic_share" />
 
             </LinearLayout>

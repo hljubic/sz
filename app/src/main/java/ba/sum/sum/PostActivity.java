@@ -8,14 +8,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.sufficientlysecure.htmltextview.HtmlTextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.adapters.AdapterImageSlider;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.models.Post;
+import im.delight.android.webview.AdvancedWebView;
 
 public class PostActivity extends Activity {
 
@@ -42,8 +41,8 @@ public class PostActivity extends Activity {
             TextView title = findViewById(R.id.title);
             title.setText(post.getTitle());
 
-            HtmlTextView content = findViewById(R.id.content);
-            content.setHtml(post.getContent());
+            AdvancedWebView webview = findViewById(R.id.webview);
+            webview.loadHtml(post.getContent());
 
             // ViewPager viewPager = findViewById(R.id.pager);
             // Glide.with(PostActivity.this).load(post.getFeaturedImage()).into(viewPager);
