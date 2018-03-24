@@ -13,12 +13,14 @@ import ba.sum.sum.adapters.AdapterExpandDocument;
 import ba.sum.sum.adapters.AdapterListSectioned;
 import ba.sum.sum.models.Institution;
 
-public class FragmentExpand extends Fragment {
+public class FragmentSimple extends Fragment {
 
     public static final String ARG_STUDIES = "arg_studies";
 
-    public static FragmentExpand newInstance(boolean useStudies) {
-        FragmentExpand fragment = new FragmentExpand();
+    private Institution institution;
+
+    public static FragmentSimple newInstance(boolean useStudies) {
+        FragmentSimple fragment = new FragmentSimple();
         Bundle args = new Bundle();
         args.putBoolean(ARG_STUDIES, useStudies);
         fragment.setArguments(args);
@@ -27,6 +29,14 @@ public class FragmentExpand extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        institution = Institution.findParentOrChildById(getActivity().getIntent().getExtras().getString("institution_id"));
+
+        if (!getArguments().getBoolean(ARG_STUDIES)) {
+            if (institution.getDocuments() == null || institution.getDocuments().size() == 0) {
+                return inflater.inflate(R.layout.fragment_no_documents, container, false);
+            }
+        }
+
         View root = inflater.inflate(R.layout.fragment_recycler_view, container, false);
 
         initComponent(root);
@@ -38,8 +48,6 @@ public class FragmentExpand extends Fragment {
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
-
-        Institution institution = Institution.findParentOrChildById(getActivity().getIntent().getExtras().getString("institution_id"));
 
         if (getArguments().getBoolean(ARG_STUDIES)) {
             AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildrenSectioned());

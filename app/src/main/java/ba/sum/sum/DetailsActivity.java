@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentAbout;
-import ba.sum.sum.fragments.FragmentExpand;
+import ba.sum.sum.fragments.FragmentSimple;
 import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.ViewAnimation;
 
@@ -142,10 +142,10 @@ public class DetailsActivity extends AppCompatActivity {
         adapter.addFragment(FragmentAbout.newInstance(institution.getId()), "O nama");
 
         if (institution.getInstitutionId() == 1 && institution.getChildren().size() > 0) {
-            adapter.addFragment(FragmentExpand.newInstance(true), "Studiji");
+            adapter.addFragment(FragmentSimple.newInstance(true), "Studiji");
         }
 
-        adapter.addFragment(FragmentExpand.newInstance(false), "Dokumenti");
+        adapter.addFragment(FragmentSimple.newInstance(false), "Dokumenti");
 
         viewPager.setAdapter(adapter);
     }
