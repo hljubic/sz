@@ -3,7 +3,6 @@ package ba.sum.sum.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,10 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
-import org.sufficientlysecure.htmltextview.HtmlTextView;
-
 import java.util.List;
 
 import ba.sum.sum.R;
 import ba.sum.sum.models.Document;
-import ba.sum.sum.utils.Tools;
-import ba.sum.sum.utils.ViewAnimation;
 
 /**
  * Created by Darko on 15.3.2018..
@@ -45,7 +40,7 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expand, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_document, parent, false);
         vh = new OriginalViewHolder(v);
         return vh;
     }
@@ -56,14 +51,8 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof AdapterExpandDocument.OriginalViewHolder) {
             final AdapterExpandDocument.OriginalViewHolder view = (AdapterExpandDocument.OriginalViewHolder) holder;
 
-
             final Document document = documents.get(position);
             view.name.setText(document.getTitle());
-            String desc = Tools.stripHtml(document.getDescription());
-            if (desc.length() > 200) {
-                desc = desc.substring(0, 200) + "...";
-            }
-            view.description.setText(desc);
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             int color = generator.getRandomColor();
@@ -79,46 +68,13 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onItemClick(view, documents.get(position), position);
                     }
-                }
-            });
 
-            view.bt_expand.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    boolean show = toggleLayoutExpand(!document.expanded, v, view.lyt_expand);
-                    documents.get(position).expanded = show;
-                }
-            });
-
-            view.opsirnije.setText("Preuzmi");
-            view.opsirnije.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
                     Intent i = new Intent(Intent.ACTION_VIEW,
                             Uri.parse(documents.get(position).getFile()));
                     ctx.startActivity(i);
-
                 }
             });
-
-            if (document.expanded) {
-                view.lyt_expand.setVisibility(View.VISIBLE);
-            } else {
-                view.lyt_expand.setVisibility(View.GONE);
-            }
-            Tools.toggleArrow(document.expanded, view.bt_expand, false);
         }
-    }
-
-    private boolean toggleLayoutExpand(boolean show, View view, View lyt_expand) {
-        Tools.toggleArrow(show, view);
-        if (show) {
-            ViewAnimation.expand(lyt_expand);
-
-        } else {
-            ViewAnimation.collapse(lyt_expand);
-        }
-        return show;
     }
 
     @Override
@@ -136,9 +92,6 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
         public ImageButton bt_expand;
         public View lyt_expand;
         public View lyt_parent;
-        public HtmlTextView description;
-        public AppCompatButton opsirnije;
-
 
         public OriginalViewHolder(View v) {
             super(v);
@@ -147,8 +100,6 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
             bt_expand = v.findViewById(R.id.bt_expand);
             lyt_expand = v.findViewById(R.id.lyt_expand);
             lyt_parent = v.findViewById(R.id.lyt_parent);
-            description = v.findViewById(R.id.tv_content);
-            opsirnije = v.findViewById(R.id.bt_more);
         }
     }
 

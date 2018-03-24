@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
-                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:maxLines="2"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/grey_40" />
@@ -61,6 +61,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_small"
                 android:background="@color/grey_10" />
 
         </LinearLayout>

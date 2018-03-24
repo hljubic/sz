@@ -7,13 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterExpandDocument;
 import ba.sum.sum.adapters.AdapterListSectioned;
 import ba.sum.sum.models.Institution;
-import ba.sum.sum.utils.LineItemDecoration;
 
 public class FragmentExpand extends Fragment {
 
@@ -47,7 +45,6 @@ public class FragmentExpand extends Fragment {
             AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildrenSectioned());
             recyclerView.setAdapter(mAdapter);
         } else {
-            recyclerView.addItemDecoration(new LineItemDecoration(getActivity(), LinearLayout.VERTICAL));
             AdapterExpandDocument mAdapterDocument = new AdapterExpandDocument(getActivity(), institution.getDocuments());
             recyclerView.setAdapter(mAdapterDocument);
         }
