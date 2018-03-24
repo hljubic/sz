@@ -5,6 +5,7 @@
     <color name="colorAccent">#ed1c24</color>
 
     <color name="overlay_dark_10">#1A000000</color>
+    <color name="overlay_dark_20">#33000000</color>
     <color name="overlay_dark_30">#4D000000</color>
     <color name="overlay_dark_40">#66000000</color>
 
@@ -16,10 +17,5 @@
     <color name="grey_60">#666666</color>
     <color name="grey_80">#37474F</color>
     <color name="grey_90">#263238</color>
-
-    <!--Material color list from https://material.io/guidelines/style/color.html-->
-
-
-    <!--for random color generator -->
 
 </resources>

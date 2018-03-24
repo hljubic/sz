@@ -151,7 +151,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
 
-        adapter.addFragment(FragmentAbout.newInstance(institution.getId()), "O nama");
+        adapter.addFragment(FragmentAbout.newInstance(institution.getId()), "Informacije");
 
         if (institution.getInstitutionId() == 1 && institution.getChildren().size() > 0) {
             adapter.addFragment(FragmentSimple.newInstance(true), "Studiji");

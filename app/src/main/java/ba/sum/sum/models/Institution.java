@@ -34,6 +34,8 @@ public class Institution extends JsonTable<Institution> {
     private String longitude;
     private String content;
     private String contact;
+    @SerializedName("desc")
+    private String desc;
     @SerializedName("faculty_type")
     private String facultyType;
     @SerializedName("institution_id")
@@ -252,6 +254,14 @@ public class Institution extends JsonTable<Institution> {
         }
 
         return sectionedChildren;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public List<Document> getDocuments() {

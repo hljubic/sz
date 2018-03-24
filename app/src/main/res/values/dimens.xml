@@ -15,5 +15,6 @@
     <dimen name="spacing_xlarge">35dp</dimen>
     <dimen name="spacing_smlarge">18dp</dimen>
     <dimen name="spacing_xmedium">7dp</dimen>
+    <dimen name="spacing_xmlarge">40dp</dimen>
 
 </resources>

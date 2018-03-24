@@ -34,10 +34,6 @@ public class AdapterListSectioned extends RecyclerView.Adapter<RecyclerView.View
         ctx = context;
     }
 
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mOnItemClickListener = mItemClickListener;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
@@ -59,7 +55,7 @@ public class AdapterListSectioned extends RecyclerView.Adapter<RecyclerView.View
             OriginalViewHolder view = (OriginalViewHolder) holder;
 
             view.name.setText(institution.getName());
-            view.desc.setText(Tools.stripHtml(institution.getContent()));
+            view.desc.setText(Tools.stripHtml(institution.getDesc()));
 
             ColorGenerator generator = ColorGenerator.DEFAULT;
             final int color = generator.getRandomColor();
@@ -74,10 +70,6 @@ public class AdapterListSectioned extends RecyclerView.Adapter<RecyclerView.View
                     Intent intent = new Intent(ctx, DetailsActivity.class);
                     intent.putExtra("institution_id", institution.getId());
                     ctx.startActivity(intent);
-                    /*
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onItemClick(view, items.get(position), position);
-                    }*/
                 }
             });
         } else {

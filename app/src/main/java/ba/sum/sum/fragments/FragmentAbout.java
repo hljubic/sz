@@ -48,19 +48,27 @@ public class FragmentAbout extends Fragment {
         institution = Institution.findParentOrChildById(String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
 
         if (institution.getImages() == null || institution.getImages().size() == 0) {
-            root = inflater.inflate(R.layout.fragment_about, container, false);
+            root = inflater.inflate(R.layout.fragment_about_no_images, container, false);
+            initComponentNoImages(root);
         } else {
             root = inflater.inflate(R.layout.fragment_about, container, false);
+            initComponent(root);
         }
-
-        initComponent(root);
 
         return root;
     }
 
     private void initComponent(final View root) {
-        AdvancedWebView webView = root.findViewById(R.id.webview);
-        webView.loadHtml(institution.getContent());
+        AdvancedWebView about = root.findViewById(R.id.about);
+        AdvancedWebView contact = root.findViewById(R.id.contact);
+
+        about.loadHtml(institution.getContent());
+        contact.loadHtml(institution.getContact());
+
+        ((TextView) root.findViewById(R.id.tv_title)).setText(institution.getName());
+        ((TextView) root.findViewById(R.id.tv_subtitle)).setText(institution.getAddress());
+        ((TextView) root.findViewById(R.id.tv_subtitle2)).setText(institution.getWebPlain());
+        ((TextView) root.findViewById(R.id.tv_subtitle3)).setText(institution.getEmail());
 
         String[] array_image_place = new String[]{institution.getLogo()};
         String[] array_title_place = new String[]{institution.getName()};
@@ -103,8 +111,7 @@ public class FragmentAbout extends Fragment {
         // displaying selected image first
         viewPager.setCurrentItem(0);
         addBottomDots(layout_dots, adapterImageSlider.getCount(), 0);
-        ((TextView) root.findViewById(R.id.title)).setText(items.get(0).name);
-        ((TextView) root.findViewById(R.id.brief)).setText(items.get(0).brief);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int pos, float positionOffset, int positionOffsetPixels) {
@@ -112,8 +119,6 @@ public class FragmentAbout extends Fragment {
 
             @Override
             public void onPageSelected(int pos) {
-                ((TextView) root.findViewById(R.id.title)).setText(items.get(pos).name);
-                ((TextView) root.findViewById(R.id.brief)).setText(items.get(pos).brief);
                 addBottomDots(layout_dots, adapterImageSlider.getCount(), pos);
             }
 
@@ -121,6 +126,12 @@ public class FragmentAbout extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+
+    private void initComponentNoImages(final View root) {
+        AdvancedWebView webView = root.findViewById(R.id.about);
+        webView.loadHtml(institution.getContent());
     }
 
     private void addBottomDots(LinearLayout layout_dots, int size, int current) {
