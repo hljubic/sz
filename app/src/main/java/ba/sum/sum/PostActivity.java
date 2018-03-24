@@ -8,25 +8,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ba.sum.sum.adapters.AdapterImageSlider;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.models.Post;
-import im.delight.android.webview.AdvancedWebView;
 
 public class PostActivity extends Activity {
 
     private Post post;
-    private ViewPager viewPager;
     private LinearLayout layout_dots;
     private AdapterImageSlider adapterImageSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_about);
+        setContentView(R.layout.activity_post);
 
         if (getIntent().getExtras() == null)
             return;
@@ -41,12 +41,8 @@ public class PostActivity extends Activity {
             TextView title = findViewById(R.id.title);
             title.setText(post.getTitle());
 
-            AdvancedWebView webview = findViewById(R.id.webview);
-            webview.loadHtml(post.getContent());
-
-            // ViewPager viewPager = findViewById(R.id.pager);
-            // Glide.with(PostActivity.this).load(post.getFeaturedImage()).into(viewPager);
-
+            HtmlTextView content = findViewById(R.id.content);
+            content.setHtml(post.getContent());
             initComponent();
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,7 +70,7 @@ public class PostActivity extends Activity {
 
     private void initComponent() {
         layout_dots = findViewById(R.id.layout_dots);
-        viewPager = findViewById(R.id.pager);
+        ViewPager viewPager = findViewById(R.id.pager);
         adapterImageSlider = new AdapterImageSlider(this, new ArrayList<Image>());
 
         final List<Image> items = new ArrayList<>();

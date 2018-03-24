@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,6 @@ import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterImageSlider;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.models.Institution;
-import im.delight.android.webview.AdvancedWebView;
 
 public class FragmentAbout extends Fragment {
 
@@ -59,11 +60,8 @@ public class FragmentAbout extends Fragment {
     }
 
     private void initComponent(final View root) {
-        AdvancedWebView about = root.findViewById(R.id.about);
-        AdvancedWebView contact = root.findViewById(R.id.contact);
-
-        about.loadHtml(institution.getContent());
-        contact.loadHtml(institution.getContact());
+        ((HtmlTextView) root.findViewById(R.id.about)).setHtml(institution.getContent());
+        ((HtmlTextView) root.findViewById(R.id.contact)).setHtml(institution.getContact());
 
         ((TextView) root.findViewById(R.id.tv_title)).setText(institution.getName());
         ((TextView) root.findViewById(R.id.tv_subtitle)).setText(institution.getAddress());
@@ -130,8 +128,7 @@ public class FragmentAbout extends Fragment {
 
 
     private void initComponentNoImages(final View root) {
-        AdvancedWebView webView = root.findViewById(R.id.about);
-        webView.loadHtml(institution.getContent());
+        ((HtmlTextView) root.findViewById(R.id.about)).setHtml(institution.getContent());
     }
 
     private void addBottomDots(LinearLayout layout_dots, int size, int current) {
