@@ -1,5 +1,7 @@
 package ba.sum.sum.models;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class Institution extends JsonTable<Institution> {
         this.section = true;
     }
 
+    @NonNull
     public static Institution findParentOrChildById(String id) {
         List<Institution> institutions = listAll(Institution.class);
 
@@ -67,7 +70,7 @@ public class Institution extends JsonTable<Institution> {
             }
         }
 
-        return null;
+        return new Institution();
     }
 
     public String getName() {
@@ -94,8 +97,22 @@ public class Institution extends JsonTable<Institution> {
         this.address = address;
     }
 
+    public String getWebPlain() {
+        if (web.startsWith("http://")) {
+            return web.substring(7, web.length());
+        } else if (web.startsWith("https://")) {
+            return web.substring(8, web.length());
+        } else {
+            return web;
+        }
+    }
+
     public String getWeb() {
-        return web;
+        if (web.startsWith("http://") || web.startsWith("https://")) {
+            return web;
+        } else {
+            return "http://" + web;
+        }
     }
 
     public void setWeb(String web) {

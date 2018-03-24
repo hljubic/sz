@@ -11,24 +11,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentAbout;
 import ba.sum.sum.fragments.FragmentSimple;
 import ba.sum.sum.models.Institution;
+import ba.sum.sum.utils.Tools;
 import ba.sum.sum.utils.ViewAnimation;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private Institution institution;
-    private View parent_view;
-    private View back_drop;
+    private View backDrop;
     private boolean rotate = false;
-    private View web_view;
-    private View contact_view;
-    private View map_view;
-    private FloatingActionButton fab_add;
+    private View fabWeb;
+    private View fabNavigate;
+    private View fabContact;
+    private View fabCall;
+    private FloatingActionButton fabMain;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class DetailsActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
 
-            ViewPager viewPager = findViewById(R.id.view_pager);
+            viewPager = findViewById(R.id.view_pager);
             setupViewPager(viewPager);
 
             TabLayout tabLayout = findViewById(R.id.tab_layout);
@@ -60,78 +61,89 @@ public class DetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        parent_view = findViewById(android.R.id.content);
-        back_drop = findViewById(R.id.back_drop);
+        backDrop = findViewById(R.id.back_drop);
 
-        final FloatingActionButton fab_web = findViewById(R.id.fab_web);
-        final FloatingActionButton fab_contact = findViewById(R.id.fab_contact);
-        final FloatingActionButton fab_map = findViewById(R.id.fab_map);
-        fab_add = findViewById(R.id.fab_add);
+        final FloatingActionButton fabWebBtn = findViewById(R.id.fab_web);
+        final FloatingActionButton fabNavigateBtn = findViewById(R.id.fab_map);
+        final FloatingActionButton fabContactBtn = findViewById(R.id.fab_contact);
+        final FloatingActionButton fabCallBtn = findViewById(R.id.fab_call);
 
-        web_view = findViewById(R.id.lyt_web);
-        contact_view = findViewById(R.id.lyt_contact);
-        map_view = findViewById(R.id.lyt_map);
-        ViewAnimation.initShowOut(web_view);
-        ViewAnimation.initShowOut(contact_view);
-        ViewAnimation.initShowOut(map_view);
-        back_drop.setVisibility(View.GONE);
+        fabMain = findViewById(R.id.fab_add);
 
-        fab_add.setOnClickListener(new View.OnClickListener() {
+        fabWeb = findViewById(R.id.lyt_web);
+        fabNavigate = findViewById(R.id.lyt_map);
+        fabCall = findViewById(R.id.lyt_call);
+        fabContact = findViewById(R.id.lyt_contact);
+
+        ViewAnimation.initShowOut(fabWeb);
+        ViewAnimation.initShowOut(fabNavigate);
+        ViewAnimation.initShowOut(fabCall);
+        ViewAnimation.initShowOut(fabContact);
+
+        backDrop.setVisibility(View.GONE);
+
+        fabMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toggleFabMode(v);
             }
         });
 
-        back_drop.setOnClickListener(new View.OnClickListener() {
+        backDrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(fab_add);
+                toggleFabMode(fabMain);
             }
         });
 
-        fab_web.setOnClickListener(new View.OnClickListener() {
+        fabWebBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), institution.getName() + " clicked", Toast.LENGTH_SHORT).show();
-
-                Uri uri = Uri.parse("http://" + institution.getWeb());
+                Uri uri = Uri.parse(institution.getWeb());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
         });
 
-        fab_contact.setOnClickListener(new View.OnClickListener() {
+        fabNavigateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Contakt clicked", Toast.LENGTH_SHORT).show();
-
-                // kad dara napravi dialog, samo proslijedit ID, vjerojatno cu ja ovo morati
-            }
-        });
-
-        fab_map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), "Map clicked", Toast.LENGTH_SHORT).show();
                 navigate();
             }
         });
-    }
 
+        fabCallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", institution.getPhone(), null));
+                startActivity(intent);
+            }
+        });
+
+        fabContactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.showContactDialog(DetailsActivity.this, institution);
+            }
+        });
+
+        // ((TextView) findViewById(R.id.tv_webpage)).setText(institution.getWebPlain());
+    }
 
     private void toggleFabMode(View v) {
         rotate = ViewAnimation.rotateFab(v, !rotate);
         if (rotate) {
-            ViewAnimation.showIn(web_view);
-            ViewAnimation.showIn(contact_view);
-            ViewAnimation.showIn(map_view);
-            back_drop.setVisibility(View.VISIBLE);
+            ViewAnimation.showIn(fabWeb);
+            ViewAnimation.showIn(fabNavigate);
+            ViewAnimation.showIn(fabCall);
+            ViewAnimation.showIn(fabContact);
+            backDrop.setVisibility(View.VISIBLE);
         } else {
-            ViewAnimation.showOut(web_view);
-            ViewAnimation.showOut(contact_view);
-            ViewAnimation.showOut(map_view);
-            back_drop.setVisibility(View.GONE);
+            ViewAnimation.showOut(fabWeb);
+            ViewAnimation.showOut(fabNavigate);
+            ViewAnimation.showOut(fabCall);
+            ViewAnimation.showOut(fabContact);
+            backDrop.setVisibility(View.GONE);
         }
     }
 
@@ -189,9 +201,15 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (rotate) {
-            toggleFabMode(fab_add);
-        } else {
-            super.onBackPressed();
+            toggleFabMode(fabMain);
+            return;
         }
+
+        if (viewPager.getCurrentItem() > 0) {
+            viewPager.setCurrentItem(0);
+            return;
+        }
+
+        super.onBackPressed();
     }
 }

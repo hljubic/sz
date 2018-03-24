@@ -58,7 +58,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
         final Institution institution = items.get(position);
 
         view.title.setText(institution.getName());
-        view.subtitle.setText(institution.getWeb());
+        view.subtitle.setText(institution.getAddress());
 
         Glide.with(ctx).load(institution.getFeaturedImage()).into(view.image_bg);
 
@@ -85,13 +85,6 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void onClick(View v) {
                 toggleHeart(view.heart, institution.getId());
-            }
-        });
-
-        view.share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
@@ -181,7 +174,7 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
         ImageView image_bg;
         TextView title, subtitle;
-        ImageButton heart, share;
+        ImageButton heart;
         View lyt_parent;
 
         public OriginalViewHolder(View v) {
@@ -190,7 +183,6 @@ public class AdapterFaculties extends RecyclerView.Adapter<RecyclerView.ViewHold
             title = v.findViewById(R.id.tv_title);
             subtitle = v.findViewById(R.id.tv_subtitle);
             heart = v.findViewById(R.id.ib_heart);
-            share = v.findViewById(R.id.ib_share);
             lyt_parent = v.findViewById(R.id.lyt_parent);
         }
     }

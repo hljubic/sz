@@ -103,10 +103,7 @@
                             android:layout_gravity="end"
                             android:gravity="center"
                             android:orientation="horizontal" />
-
-
                     </RelativeLayout>
-
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -115,32 +112,11 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_large" />
 
-            <LinearLayout
+            <im.delight.android.webview.AdvancedWebView
+                android:id="@+id/webview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_large"
-                android:orientation="vertical">
-
-                <org.sufficientlysecure.htmltextview.HtmlTextView
-                    android:id="@+id/content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Osnovne informacije"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/grey_90"
-                    android:visibility="gone" />
-
-                <im.delight.android.webview.AdvancedWebView
-                    android:id="@+id/webview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <org.sufficientlysecure.htmltextview.HtmlTextView
-                    android:id="@+id/tv_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/spacing_medium" />
 
             <View
                 android:layout_width="0dp"

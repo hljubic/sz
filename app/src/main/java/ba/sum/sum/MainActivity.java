@@ -1,6 +1,5 @@
 package ba.sum.sum;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,33 +11,25 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.List;
-
 import ba.sum.sum.adapters.AdapterPager;
-import ba.sum.sum.adapters.AdapterSpinner;
 import ba.sum.sum.fragments.FragmentFaculties;
 import ba.sum.sum.fragments.FragmentNews;
 import ba.sum.sum.fragments.FragmentWebView;
-import ba.sum.sum.models.Institution;
 import ba.sum.sum.utils.Constants;
+import ba.sum.sum.utils.Tools;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         Glide.with(this).load(R.drawable.ic_sum)
                 .into((ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_logo_nav));
 
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager = findViewById(R.id.view_pager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
@@ -81,9 +72,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            return;
         }
+
+        if (viewPager.getCurrentItem() > 0) {
+            viewPager.setCurrentItem(0);
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     @Override
@@ -110,43 +107,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showDialog() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        dialog.setContentView(R.layout.dialog_contact);
-        dialog.setCancelable(true);
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        final AppCompatSpinner listFaculties = dialog.findViewById(R.id.con_faculties);
-        final EditText naslov = dialog.findViewById(R.id.con_naslov);
-        final AppCompatEditText sadrzaj = dialog.findViewById(R.id.con_sadrzaj);
-
-        final List<Institution> institutions = Institution.listAll(Institution.class);
-        AdapterSpinner adapterSpinner = new AdapterSpinner(getApplicationContext(), institutions);
-        adapterSpinner.setDropDownViewResource(R.layout.spinner);
-        listFaculties.setAdapter(adapterSpinner);
-        listFaculties.setSelection(0);
-
-        (dialog.findViewById(R.id.bt_send)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Institution selectedInstitution = institutions.get(listFaculties.getSelectedItemPosition());
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto", selectedInstitution.getEmail(), null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, naslov.getText().toString());
-                emailIntent.putExtra(Intent.EXTRA_TEXT, sadrzaj.getText().toString());
-                startActivity(Intent.createChooser(emailIntent, ""));
-            }
-        });
-
-        dialog.show();
     }
 
     @Override
@@ -180,13 +140,13 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("only_faculties", false);
                     startActivity(intent);
                 } else if (id == R.id.nav_contact) {
-                    showDialog();
+                    Tools.showContactDialog(MainActivity.this, null);
                 } else if (id == R.id.nav_faq) {
                     Intent intent = new Intent(MainActivity.this, FaqActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_iss) {
                     // TODO: Čupati sa API-ja
-                    Uri uri = Uri.parse("https://is.sve-mo.ba:4443/ords/f?p=1101:LOGIN:7759647099037");
+                    Uri uri = Uri.parse("http://is.sve-mo.ba/prijava_ispita.html");
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
@@ -196,4 +156,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

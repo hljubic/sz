@@ -23,7 +23,6 @@ import im.delight.android.webview.AdvancedWebView;
 public class FragmentAbout extends Fragment {
 
     private static final String ARG_INSTITUTION_ID = "institution_id";
-    private View parent_view;
     private ViewPager viewPager;
     private LinearLayout layout_dots;
     private AdapterImageSlider adapterImageSlider;
@@ -44,9 +43,15 @@ public class FragmentAbout extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_about, container, false);
+        View root;
 
         institution = Institution.findParentOrChildById(String.valueOf(getArguments().getString(ARG_INSTITUTION_ID)));
+
+        if (institution.getImages() == null || institution.getImages().size() == 0) {
+            root = inflater.inflate(R.layout.fragment_about, container, false);
+        } else {
+            root = inflater.inflate(R.layout.fragment_about, container, false);
+        }
 
         initComponent(root);
 
