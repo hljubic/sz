@@ -2,8 +2,10 @@ package ba.sum.sum.utils;
 
 import android.app.Application;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import ba.hljubic.jsonorm.JsonOrm;
 import ba.sum.sum.models.Institution;
 
 /**
@@ -29,6 +31,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        JsonOrm.with(this);
+
+        institutions = new ArrayList<>();
     }
 
     public void initInstitutions() {

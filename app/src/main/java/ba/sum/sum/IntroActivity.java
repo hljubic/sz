@@ -1,21 +1,16 @@
 package ba.sum.sum;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,8 +31,6 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.hljubic.jsonorm.JsonOrm;
-import ba.sum.sum.models.Institution;
 import ba.sum.sum.models.Step;
 import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
@@ -65,20 +58,6 @@ public class IntroActivity extends AppCompatActivity {
     private MyViewPagerAdapter myViewPagerAdapter;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        JsonOrm.with(this);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getBoolean("firstime", true)) {
-            sharedPreferences.edit().putBoolean("firstime", false).apply();
-        } else {
-            skipIntro();
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
@@ -99,7 +78,7 @@ public class IntroActivity extends AppCompatActivity {
 
         getData();
 
-        Tools.setSystemBarColor(this, R.color.grey_20);
+        Tools.setSystemBarColor(this, R.color.colorPrimaryDark);
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,58 +100,25 @@ public class IntroActivity extends AppCompatActivity {
                 steps.addAll(list);
 
                 myViewPagerAdapter.notifyDataSetChanged();
+
+                bottomProgressDots(0);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), R.string.cant_connect, Toast.LENGTH_LONG).show();
 
-                showErrorDialog();
+                SplashActivity.showErrorDialog(IntroActivity.this);
             }
 
         });
 
         Volley.newRequestQueue(getApplicationContext()).add(request);
-
-        StringRequest institutionsRequest = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "sastavnice/vazne", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ArrayList<Institution> list = new Gson().fromJson(response, new TypeToken<List<Institution>>() {
-                }.getType());
-
-                Institution.saveAllAsync(Institution.class, list);
-            }
-        }, null);
-
-        Volley.newRequestQueue(this).add(institutionsRequest);
     }
 
     public void skipIntro() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
-    }
-
-    private void showErrorDialog() {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        dialog.setContentView(R.layout.dialog_warning);
-        dialog.setCancelable(false);
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        (dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getData();
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setAttributes(lp);
     }
 
     private void bottomProgressDots(int current_index) {

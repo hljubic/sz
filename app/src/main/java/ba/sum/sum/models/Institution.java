@@ -9,6 +9,7 @@ import java.util.List;
 
 import ba.hljubic.jsonorm.JsonTable;
 import ba.hljubic.jsonorm.annotations.InFile;
+import ba.sum.sum.utils.App;
 import ba.sum.sum.utils.Constants;
 
 /**
@@ -17,13 +18,12 @@ import ba.sum.sum.utils.Constants;
 
 @InFile("institutions.json")
 public class Institution extends JsonTable<Institution> {
-    private static final String TYPE_UNDEGRADUATE = "undergraduate";
+    private static final String TYPE_UNDERGRADUATE = "undergraduate";
     private static final String TYPE_GRADUATE = "graduate";
     private static final String TYPE_POSTGRADUATE = "postgraduate";
     private static final String TYPE_EXPERT = "expert";
     private static final String TYPE_OTHER = "other";
     public String name;
-    public boolean expanded;
     private String logo;
     private String address;
     private String web;
@@ -55,7 +55,7 @@ public class Institution extends JsonTable<Institution> {
 
     @NonNull
     public static Institution findParentOrChildById(String id) {
-        List<Institution> institutions = listAll(Institution.class);
+        List<Institution> institutions = App.get().getInstitutions();//(Institution.class);
 
         for (Institution institution : institutions) {
             if (institution.getId().equals(id)) {
@@ -215,7 +215,7 @@ public class Institution extends JsonTable<Institution> {
 
         for (Institution institution : children) {
             switch (institution.getFacultyType()) {
-                case TYPE_UNDEGRADUATE:
+                case TYPE_UNDERGRADUATE:
                     undegraduate.add(institution);
                     break;
                 case TYPE_GRADUATE:

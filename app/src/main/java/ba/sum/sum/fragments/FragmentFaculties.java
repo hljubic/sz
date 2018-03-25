@@ -31,6 +31,7 @@ import ba.sum.sum.DetailsActivity;
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterFaculties;
 import ba.sum.sum.models.Institution;
+import ba.sum.sum.utils.App;
 import ba.sum.sum.utils.Constants;
 
 public class FragmentFaculties extends Fragment {
@@ -126,7 +127,8 @@ public class FragmentFaculties extends Fragment {
 
                 mAdapter.notifyDataSetChanged();
 
-
+                App.get().getInstitutions().clear();
+                App.get().getInstitutions().addAll(institutions);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -146,10 +148,11 @@ public class FragmentFaculties extends Fragment {
 
                 if (institutions.size() == 0) {
                     showErrorDialog();
+                } else {
+                    App.get().getInstitutions().clear();
+                    App.get().getInstitutions().addAll(institutions);
                 }
-
             }
-
         });
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
