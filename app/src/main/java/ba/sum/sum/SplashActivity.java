@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,7 +33,6 @@ import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
 public class SplashActivity extends AppCompatActivity {
-
 
     public static void getData(final Context context) {
         final List<Institution> institutions = new ArrayList<>();
@@ -156,10 +156,16 @@ public class SplashActivity extends AppCompatActivity {
             App.get().getInstitutions().clear();
             App.get().getInstitutions().addAll(institutions);
 
-            goFurther(SplashActivity.this);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    goFurther(SplashActivity.this);
+                }
+            }, Constants.SPLASH_DELAY);
         } else {
             getData(SplashActivity.this);
         }
     }
+
 }
 
