@@ -160,6 +160,9 @@ public class Institution extends JsonTable<Institution> {
     }
 
     public String getContact() {
+        if (contact == null)
+            return "";
+
         return contact;
     }
 
