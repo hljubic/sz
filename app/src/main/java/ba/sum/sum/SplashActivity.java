@@ -63,7 +63,6 @@ public class SplashActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, R.string.cant_connect, Toast.LENGTH_LONG).show();
 
-                institutions.clear();
                 List<Institution> list = Institution.listAll(Institution.class);
 
                 for (Institution institution : list) {

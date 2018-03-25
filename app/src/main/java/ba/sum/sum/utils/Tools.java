@@ -80,7 +80,7 @@ public class Tools {
         final EditText naslov = dialog.findViewById(R.id.con_naslov);
         final AppCompatEditText sadrzaj = dialog.findViewById(R.id.con_sadrzaj);
 
-        final List<Institution> institutions = Institution.listAll(Institution.class);
+        final List<Institution> institutions = App.get().getInstitutions();
         AdapterSpinner adapterSpinner = new AdapterSpinner(context, institutions);
         adapterSpinner.setDropDownViewResource(R.layout.spinner);
         listFaculties.setAdapter(adapterSpinner);

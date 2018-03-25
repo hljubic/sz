@@ -63,7 +63,7 @@ public class FragmentFaculties extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
-        List<Institution> list = Institution.listAll(Institution.class);
+        List<Institution> list = App.get().getInstitutions();
 
         for (Institution institution : list) {
             if (institution.getInstitutionId() == 1) {
@@ -136,6 +136,7 @@ public class FragmentFaculties extends Fragment {
                 Toast.makeText(getActivity(), R.string.cant_connect, Toast.LENGTH_LONG).show();
 
                 institutions.clear();
+
                 List<Institution> list = Institution.listAll(Institution.class);
 
                 for (Institution institution : list) {

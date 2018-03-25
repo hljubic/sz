@@ -31,6 +31,7 @@ import java.util.List;
 
 import ba.sum.sum.models.Institution;
 import ba.sum.sum.models.Poi;
+import ba.sum.sum.utils.App;
 import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 
@@ -51,7 +52,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         pois = new ArrayList<>();
-        institutions = Institution.listAll(Institution.class);
+        institutions = App.get().getInstitutions();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Pregled lokacija");
