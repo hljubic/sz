@@ -1,12 +1,16 @@
 package ba.sum.sum;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -16,8 +20,9 @@ import java.util.List;
 import ba.sum.sum.adapters.AdapterImageSlider;
 import ba.sum.sum.models.Image;
 import ba.sum.sum.models.Post;
+import ba.sum.sum.utils.Tools;
 
-public class PostActivity extends Activity {
+public class PostActivity extends AppCompatActivity {
 
     private Post post;
     private LinearLayout layout_dots;
@@ -32,8 +37,7 @@ public class PostActivity extends Activity {
             return;
 
         try {
-            String id = getIntent().getExtras().getString("user_id", "");
-            post = Post.findById(Post.class, id);
+            post = Post.findById(Post.class, getIntent().getExtras().getString("user_id"));
 
             TextView date = findViewById(R.id.brief);
             date.setText(post.getCreatedAt());
@@ -43,6 +47,18 @@ public class PostActivity extends Activity {
 
             HtmlTextView content = findViewById(R.id.content);
             content.setHtml(post.getContent());
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle(post.getTitle());
+            setSupportActionBar(toolbar);
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+            }
+
+            Tools.setSystemBarColor(this, R.color.colorPrimaryDark);
+
             initComponent();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,17 +89,13 @@ public class PostActivity extends Activity {
         ViewPager viewPager = findViewById(R.id.pager);
         adapterImageSlider = new AdapterImageSlider(this, new ArrayList<Image>());
 
+        Log.wtf("aaaaa", new Gson().toJson(post.getImages()));
         final List<Image> items = new ArrayList<>();
 
-        final String[] arr_img = new String[post.getImages().size()];
-
         for (int i = 0; i < post.getImages().size(); i++) {
-            arr_img[i] = post.getImages().get(i).getFile();
-        }
-
-        for (int i = 0; i < arr_img.length; i++) {
             Image obj = new Image();
-            obj.image = arr_img[i];
+            obj.image = post.getImages().get(i).getFile();
+            ;
             obj.name = post.getTitle();
             obj.brief = post.getCreatedAt();
             items.add(obj);
@@ -115,4 +127,10 @@ public class PostActivity extends Activity {
         });
     }
 
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

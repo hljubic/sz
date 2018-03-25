@@ -3,7 +3,6 @@ package ba.sum.sum.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,6 @@ public class AdapterImageSlider extends PagerAdapter {
         View v = inflater.inflate(R.layout.item_about_image, container, false);
 
         ImageView image = (ImageView) v.findViewById(R.id.image);
-        Log.wtf("bbbbb", o.image);
         Glide.with(container.getContext()).load(o.image).into(image);
 
         MaterialRippleLayout lyt_parent = v.findViewById(R.id.lyt_parent);

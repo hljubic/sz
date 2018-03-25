@@ -60,70 +60,74 @@ public class FragmentAbout extends Fragment {
     }
 
     private void initComponent(final View root) {
-        ((HtmlTextView) root.findViewById(R.id.about)).setHtml(institution.getContent());
-        ((HtmlTextView) root.findViewById(R.id.contact)).setHtml(institution.getContact());
+        try {
+            ((HtmlTextView) root.findViewById(R.id.about)).setHtml(institution.getContent());
+            ((HtmlTextView) root.findViewById(R.id.contact)).setHtml(institution.getContact());
 
-        ((TextView) root.findViewById(R.id.tv_title)).setText(institution.getName());
-        ((TextView) root.findViewById(R.id.tv_subtitle)).setText(institution.getAddress());
-        ((TextView) root.findViewById(R.id.tv_subtitle2)).setText(institution.getWebPlain());
-        ((TextView) root.findViewById(R.id.tv_subtitle3)).setText(institution.getEmail());
+            ((TextView) root.findViewById(R.id.tv_title)).setText(institution.getName());
+            ((TextView) root.findViewById(R.id.tv_subtitle)).setText(institution.getAddress());
+            ((TextView) root.findViewById(R.id.tv_subtitle2)).setText(institution.getWebPlain());
+            ((TextView) root.findViewById(R.id.tv_subtitle3)).setText(institution.getEmail());
 
-        String[] array_image_place = new String[]{institution.getLogo()};
-        String[] array_title_place = new String[]{institution.getName()};
-        String[] array_subtitle_place = new String[]{institution.getAddress()};
+            String[] array_image_place = new String[]{institution.getLogo()};
+            String[] array_title_place = new String[]{institution.getName()};
+            String[] array_subtitle_place = new String[]{institution.getAddress()};
 
-        layout_dots = root.findViewById(R.id.layout_dots);
-        viewPager = root.findViewById(R.id.pager);
-        adapterImageSlider = new AdapterImageSlider(getActivity(), new ArrayList<Image>());
+            layout_dots = root.findViewById(R.id.layout_dots);
+            viewPager = root.findViewById(R.id.pager);
+            adapterImageSlider = new AdapterImageSlider(getActivity(), new ArrayList<Image>());
 
-        final List<Image> items = new ArrayList<>();
+            final List<Image> items = new ArrayList<>();
 
-        final String[] arr_img = new String[institution.getImages().size()];
+            final String[] arr_img = new String[institution.getImages().size()];
 
-        for (int i = 0; i < institution.getImages().size(); i++) {
-            arr_img[i] = institution.getImages().get(i).getFile();
+            for (int i = 0; i < institution.getImages().size(); i++) {
+                arr_img[i] = institution.getImages().get(i).getFile();
+            }
+
+            if (arr_img.length != 0) {
+                for (int i = 0; i < arr_img.length; i++) {
+                    Image obj = new Image();
+                    obj.image = arr_img[i];
+                    obj.name = institution.getName();
+                    obj.brief = institution.getAddress();
+                    items.add(obj);
+                }
+            } else {
+                for (int i = 0; i < array_image_place.length; i++) {
+                    Image obj = new Image();
+                    obj.image = array_image_place[i];
+                    obj.name = array_title_place[i];
+                    obj.brief = array_subtitle_place[i];
+                    items.add(obj);
+                }
+            }
+
+
+            adapterImageSlider.setItems(items);
+            viewPager.setAdapter(adapterImageSlider);
+
+            // displaying selected image first
+            viewPager.setCurrentItem(0);
+            addBottomDots(layout_dots, adapterImageSlider.getCount(), 0);
+
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int pos, float positionOffset, int positionOffsetPixels) {
+                }
+
+                @Override
+                public void onPageSelected(int pos) {
+                    addBottomDots(layout_dots, adapterImageSlider.getCount(), pos);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (arr_img.length != 0) {
-            for (int i = 0; i < arr_img.length; i++) {
-                Image obj = new Image();
-                obj.image = arr_img[i];
-                obj.name = institution.getName();
-                obj.brief = institution.getAddress();
-                items.add(obj);
-            }
-        } else {
-            for (int i = 0; i < array_image_place.length; i++) {
-                Image obj = new Image();
-                obj.image = array_image_place[i];
-                obj.name = array_title_place[i];
-                obj.brief = array_subtitle_place[i];
-                items.add(obj);
-            }
-        }
-
-
-        adapterImageSlider.setItems(items);
-        viewPager.setAdapter(adapterImageSlider);
-
-        // displaying selected image first
-        viewPager.setCurrentItem(0);
-        addBottomDots(layout_dots, adapterImageSlider.getCount(), 0);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int pos, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int pos) {
-                addBottomDots(layout_dots, adapterImageSlider.getCount(), pos);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
     }
 
 

@@ -100,6 +100,10 @@ public class Institution extends JsonTable<Institution> {
     }
 
     public String getWebPlain() {
+        if (web == null) {
+            return "";
+        }
+
         if (web.startsWith("http://")) {
             return web.substring(7, web.length());
         } else if (web.startsWith("https://")) {

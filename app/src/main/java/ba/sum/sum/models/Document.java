@@ -2,8 +2,6 @@ package ba.sum.sum.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 import ba.hljubic.jsonorm.JsonTable;
 import ba.sum.sum.utils.Constants;
 
@@ -11,8 +9,7 @@ import ba.sum.sum.utils.Constants;
  * Created by Darko on 15.3.2018..
  */
 
-public class Document extends JsonTable<Institution> {
-    public boolean expanded;
+public class Document extends JsonTable<Document> {
     private String title;
     @SerializedName("desc")
     private String description;
@@ -23,7 +20,6 @@ public class Document extends JsonTable<Institution> {
     private int institutionId;
     @SerializedName("post_id")
     private int postId;
-    private List<Document> documents;
 
     public String getTitle() {
         return title;
@@ -42,7 +38,7 @@ public class Document extends JsonTable<Institution> {
     }
 
     public String getFile() {
-        return Constants.BASE_API_URL + "preuzmi/" + file;
+        return Constants.BASE_API_URL + "preuzmi/" + title;
     }
 
     public void setFile(String file) {
@@ -81,11 +77,4 @@ public class Document extends JsonTable<Institution> {
         this.postId = postId;
     }
 
-    public List<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(List<Document> documents) {
-        this.documents = documents;
-    }
 }
