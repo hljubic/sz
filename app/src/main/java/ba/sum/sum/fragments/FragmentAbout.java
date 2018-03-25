@@ -16,6 +16,7 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ba.sum.sum.DetailsActivity;
 import ba.sum.sum.R;
 import ba.sum.sum.adapters.AdapterImageSlider;
 import ba.sum.sum.models.Image;
@@ -51,6 +52,12 @@ public class FragmentAbout extends Fragment {
         if (institution.getImages() == null || institution.getImages().size() == 0) {
             root = inflater.inflate(R.layout.fragment_about_no_images, container, false);
             initComponentNoImages(root);
+
+            try {
+                ((DetailsActivity) getActivity()).handleChildWithoutFab();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             root = inflater.inflate(R.layout.fragment_about, container, false);
             initComponent(root);

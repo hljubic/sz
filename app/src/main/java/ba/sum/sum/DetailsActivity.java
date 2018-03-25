@@ -30,6 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
     private View fabCall;
     private FloatingActionButton fabMain;
     private ViewPager viewPager;
+    private boolean shouldHideNavigate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,18 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem registrar = menu.findItem(R.id.action_navigate);
+        registrar.setVisible(!shouldHideNavigate);
+        return true;
+    }
+
+    public void handleChildWithoutFab() {
+        fabMain.setVisibility(View.GONE);
+
+        shouldHideNavigate = true;
     }
 
     @Override

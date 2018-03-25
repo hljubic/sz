@@ -11,31 +11,31 @@
             android:title="Sveučilište u Mostaru" />
         <item
             android:id="@+id/nav_choir"
-            android:icon="@drawable/ic_group"
+            android:icon="@drawable/ic_business"
             android:title="Studentski zbor" />
         <item
             android:id="@+id/nav_center"
-            android:icon="@drawable/ic_business"
+            android:icon="@drawable/nav_service"
             android:title="Studentski centar" />
         <item
             android:id="@+id/nav_service"
-            android:icon="@drawable/nav_service"
+            android:icon="@drawable/ic_group"
             android:title="Studentski servis" />
     </group>
 
     <item android:title="Ostalo">
         <menu>
             <item
-                android:id="@+id/nav_pois"
-                android:icon="@drawable/ic_place_black_normal"
-                android:title="Zanimljive lokacije" />
-            <item
                 android:id="@+id/nav_rector"
                 android:icon="@drawable/person"
                 android:title="Rektorova riječ" />
             <item
+                android:id="@+id/nav_pois"
+                android:icon="@drawable/ic_map"
+                android:title="Zanimljive lokacije" />
+            <item
                 android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_email"
                 android:title="Kontakt" />
             <item
                 android:id="@+id/nav_faq"
@@ -43,8 +43,8 @@
                 android:title="Česta pitanja" />
             <item
                 android:id="@+id/nav_iss"
-                android:icon="@drawable/ic_iss"
-                android:title="ISS sustav" />
+                android:icon="@drawable/ic_web_black_24dp"
+                android:title="ISS" />
         </menu>
     </item>
 
