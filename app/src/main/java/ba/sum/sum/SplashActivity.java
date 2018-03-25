@@ -143,18 +143,10 @@ public class SplashActivity extends AppCompatActivity {
 
         Tools.setSystemBarColor(this, R.color.colorPrimaryDark);
 
-        List<Institution> institutions = new ArrayList<>();
         List<Institution> list = Institution.listAll(Institution.class);
 
         if (list.size() > 0) {
-            for (Institution institution : list) {
-                if (institution.getInstitutionId() == 1) {
-                    institutions.add(institution);
-                }
-            }
-
-            App.get().getInstitutions().clear();
-            App.get().getInstitutions().addAll(institutions);
+            App.get().getInstitutions().addAll(list);
 
             new Handler().postDelayed(new Runnable() {
                 @Override

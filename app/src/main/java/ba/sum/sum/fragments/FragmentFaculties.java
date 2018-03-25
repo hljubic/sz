@@ -128,7 +128,7 @@ public class FragmentFaculties extends Fragment {
                 mAdapter.notifyDataSetChanged();
 
                 App.get().getInstitutions().clear();
-                App.get().getInstitutions().addAll(institutions);
+                App.get().getInstitutions().addAll(list);
             }
         }, new Response.ErrorListener() {
             @Override
