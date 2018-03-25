@@ -38,11 +38,15 @@ public class Document extends JsonTable<Document> {
     }
 
     public String getFile() {
-        return Constants.BASE_API_URL + "preuzmi/" + title;
+        return Constants.BASE_API_URL + "preuzmi/" + file;
     }
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public String getFileTitle() {
+        return Constants.BASE_API_URL + "preuzmi/" + title;
     }
 
     public String getType() {

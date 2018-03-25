@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -89,13 +86,11 @@ public class PostActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.pager);
         adapterImageSlider = new AdapterImageSlider(this, new ArrayList<Image>());
 
-        Log.wtf("aaaaa", new Gson().toJson(post.getImages()));
         final List<Image> items = new ArrayList<>();
 
         for (int i = 0; i < post.getImages().size(); i++) {
             Image obj = new Image();
-            obj.image = post.getImages().get(i).getFile();
-            ;
+            obj.image = post.getImages().get(i).getFileTitle();
             obj.name = post.getTitle();
             obj.brief = post.getCreatedAt();
             items.add(obj);

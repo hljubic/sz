@@ -23,17 +23,17 @@ import ba.sum.sum.models.Document;
  * Created by Darko on 15.3.2018..
  */
 
-public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterDocument extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Document> documents;
     private Context ctx;
-    private AdapterExpandDocument.OnItemClickListener mOnItemClickListener;
+    private AdapterDocument.OnItemClickListener mOnItemClickListener;
 
-    public AdapterExpandDocument(Context ctx, List<Document> documents) {
+    public AdapterDocument(Context ctx, List<Document> documents) {
         this.documents = documents;
         this.ctx = ctx;
     }
 
-    public void setOnItemClickListener(final AdapterExpandDocument.OnItemClickListener mItemClickListener) {
+    public void setOnItemClickListener(final AdapterDocument.OnItemClickListener mItemClickListener) {
         this.mOnItemClickListener = mItemClickListener;
     }
 
@@ -48,8 +48,8 @@ public class AdapterExpandDocument extends RecyclerView.Adapter<RecyclerView.Vie
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof AdapterExpandDocument.OriginalViewHolder) {
-            final AdapterExpandDocument.OriginalViewHolder view = (AdapterExpandDocument.OriginalViewHolder) holder;
+        if (holder instanceof AdapterDocument.OriginalViewHolder) {
+            final AdapterDocument.OriginalViewHolder view = (AdapterDocument.OriginalViewHolder) holder;
 
             final Document document = documents.get(position);
             view.name.setText(document.getTitle());

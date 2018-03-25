@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.List;
@@ -52,7 +55,13 @@ public class AdapterFaq extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-            view.image.setVisibility(View.GONE);
+            ColorGenerator generator = ColorGenerator.DEFAULT;
+            int color = generator.getRandomColor();
+            String firstChar = faq.getPitanje() != null && faq.getPitanje().length() > 0 ? faq.getPitanje().substring(0, 1) : " ";
+            TextDrawable drawable = TextDrawable.builder()
+                    .buildRound(firstChar, color);
+            view.image.setImageDrawable(drawable);
+
             view.bt_more.setVisibility(View.GONE);
 
             if (faq.expanded) {

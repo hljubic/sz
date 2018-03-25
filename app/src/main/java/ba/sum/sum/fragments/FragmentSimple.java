@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ba.sum.sum.R;
-import ba.sum.sum.adapters.AdapterExpandDocument;
+import ba.sum.sum.adapters.AdapterDocument;
 import ba.sum.sum.adapters.AdapterListSectioned;
 import ba.sum.sum.models.Institution;
 
@@ -53,7 +53,7 @@ public class FragmentSimple extends Fragment {
             AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildrenSectioned());
             recyclerView.setAdapter(mAdapter);
         } else {
-            AdapterExpandDocument mAdapterDocument = new AdapterExpandDocument(getActivity(), institution.getDocuments());
+            AdapterDocument mAdapterDocument = new AdapterDocument(getActivity(), institution.getDocuments());
             recyclerView.setAdapter(mAdapterDocument);
         }
 

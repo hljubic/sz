@@ -18,103 +18,70 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:paddingLeft="18dp"
-                android:text="Kontakti"
+                android:paddingLeft="@dimen/spacing_large"
+                android:paddingStart="@dimen/spacing_large"
+                android:text="Kontakt"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <View
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/con_faculties"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
-        android:layout_height="8dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_middle"
+        android:layout_marginLeft="@dimen/spacing_middle"
+        android:layout_marginRight="@dimen/spacing_middle"
+        android:layout_marginStart="@dimen/spacing_middle"
+        android:padding="@dimen/spacing_middle"
+        android:spinnerMode="dialog" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/con_naslov"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingLeft="9dp"
-        android:paddingRight="9dp">
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_middle"
+        android:layout_marginLeft="@dimen/spacing_middle"
+        android:layout_marginRight="@dimen/spacing_middle"
+        android:layout_marginStart="@dimen/spacing_middle"
+        android:hint="Naslov"
+        android:padding="@dimen/spacing_middle"
+        android:singleLine="true"
+        android:textColorLink="@color/common_google_signin_btn_text_dark_focused" />
 
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/con_faculties"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingBottom="2dp"
-            android:paddingLeft="6dp"
-            android:paddingRight="2dp"
-            android:paddingTop="2dp"
-            android:spinnerMode="dialog" />
-    </LinearLayout>
-
-    <View
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/con_sadrzaj"
         android:layout_width="match_parent"
-        android:layout_height="6dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingLeft="9dp"
-        android:paddingRight="9dp">
-
-        <EditText
-            android:id="@+id/con_naslov"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Naslov"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textColorLink="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="18dp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="27dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/con_sadrzaj"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:gravity="top"
-            android:hint="Sadržaj"
-            android:inputType="textMultiLine"
-            android:maxLines="12"
-            android:minLines="7"
-            android:paddingLeft="7dp"
-            android:paddingTop="2dp"
-            android:textColor="@android:color/black"
-            android:textColorLink="@color/common_google_signin_btn_text_dark_focused" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_middle12"
+        android:background="@drawable/border"
+        android:gravity="top"
+        android:hint="Sadržaj"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:minLines="5"
+        android:padding="@dimen/spacing_middle"
+        android:textColor="@android:color/black"
+        android:textColorLink="@color/common_google_signin_btn_text_dark_focused" />
 
     <LinearLayout
         android:id="@+id/lyt_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_large"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/bt_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_rounded_green"
-            android:paddingLeft="@dimen/spacing_mlarge"
-            android:paddingRight="@dimen/spacing_mlarge"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:background="@drawable/btn_rounded_blue"
             android:text="Pošalji"
             android:textColor="@android:color/white" />
 
