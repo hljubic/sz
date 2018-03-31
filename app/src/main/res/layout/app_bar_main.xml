@@ -28,6 +28,8 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="start"
             android:background="@color/colorPrimary"
+            app:tabTextColor="@color/colorPrimaryLight"
+            app:tabSelectedTextColor="@color/white"
             app:tabGravity="fill"
             app:tabMode="fixed" />
 

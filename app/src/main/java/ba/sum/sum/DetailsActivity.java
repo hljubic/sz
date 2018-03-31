@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +13,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import ba.sum.sum.adapters.AdapterPager;
 import ba.sum.sum.fragments.FragmentAbout;
+import ba.sum.sum.fragments.FragmentNews;
 import ba.sum.sum.fragments.FragmentSimple;
+import ba.sum.sum.fragments.FragmentWebView;
 import ba.sum.sum.models.Institution;
+import ba.sum.sum.utils.Constants;
 import ba.sum.sum.utils.Tools;
 import ba.sum.sum.utils.ViewAnimation;
 
@@ -28,7 +34,7 @@ public class DetailsActivity extends AppCompatActivity {
     private View fabNavigate;
     private View fabContact;
     private View fabCall;
-    private FloatingActionButton fabMain;
+    private FloatingActionButton fabMain, fabFollow;
     private ViewPager viewPager;
     private boolean shouldHideNavigate = false;
 
@@ -41,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
             return;
 
         try {
-            String id = getIntent().getExtras().getString("institution_id", "");
+            String id = getIntent().getExtras().getString("institution_id", "-1");
             institution = Institution.findParentOrChildById(id);
 
             Toolbar toolbar = findViewById(R.id.toolbar);
@@ -58,6 +64,10 @@ public class DetailsActivity extends AppCompatActivity {
 
             TabLayout tabLayout = findViewById(R.id.tab_layout);
             tabLayout.setupWithViewPager(viewPager);
+
+            if (institution.getId().equals(String.valueOf(Constants.REMOTE_ID_ZBOR))) {
+                tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,6 +80,25 @@ public class DetailsActivity extends AppCompatActivity {
         final FloatingActionButton fabCallBtn = findViewById(R.id.fab_call);
 
         fabMain = findViewById(R.id.fab_add);
+        fabFollow = findViewById(R.id.fab_follow);
+
+        if (String.valueOf(institution.getInstitutionId()).equals(String.valueOf(Constants.REMOTE_ID_ZBOR))) {
+            fabMain.setVisibility(View.GONE);
+            fabFollow.setVisibility(View.VISIBLE);
+
+            fabFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(findViewById(R.id.ll_content), "Čestitamo! Uspješno ste se pretplatili.",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+
+                    FirebaseMessaging.getInstance().subscribeToTopic("news_" + institution.getId());
+                }
+            });
+
+            handleChildWithoutFab();
+        }
 
         fabWeb = findViewById(R.id.lyt_web);
         fabNavigate = findViewById(R.id.lyt_map);
@@ -127,8 +156,6 @@ public class DetailsActivity extends AppCompatActivity {
                 Tools.showContactDialog(DetailsActivity.this, institution);
             }
         });
-
-        // ((TextView) findViewById(R.id.tv_webpage)).setText(institution.getWebPlain());
     }
 
     private void toggleFabMode(View v) {
@@ -152,13 +179,26 @@ public class DetailsActivity extends AppCompatActivity {
 
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
 
-        adapter.addFragment(FragmentAbout.newInstance(institution.getId()), "Informacije");
+        if (String.valueOf(institution.getInstitutionId()).equals(Constants.REMOTE_ID_ZBOR)) {
+            adapter.addFragment(FragmentNews.newInstance(institution.getId()), "Novosti");
+        } else {
+            adapter.addFragment(FragmentAbout.newInstance(institution.getId()), "Informacije");
+        }
 
-        if (institution.getInstitutionId() == 1 && institution.getChildren().size() > 0) {
+        if (String.valueOf(institution.getInstitutionId()).equals(Constants.REMOTE_ID_SVEUCILISTE)
+                && institution.getChildren().size() > 0) {
             adapter.addFragment(FragmentSimple.newInstance(true), "Studiji");
         }
 
+        if (institution.getId().equals(String.valueOf(Constants.REMOTE_ID_ZBOR))) {
+            adapter.addFragment(FragmentSimple.newInstance(true), "Događaji");
+        }
+
         adapter.addFragment(FragmentSimple.newInstance(false), "Dokumenti");
+
+        if (institution.getId().equals(String.valueOf(Constants.REMOTE_ID_ZBOR))) {
+            adapter.addFragment(FragmentWebView.newInstance(Constants.ZBOR_USTROJ), "Uprava");
+        }
 
         viewPager.setAdapter(adapter);
     }
@@ -180,6 +220,9 @@ public class DetailsActivity extends AppCompatActivity {
         if (id == R.id.action_navigate) {
             navigate();
             return true;
+        } else if (id == R.id.action_settings) {
+            Intent intent = new Intent(DetailsActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     private void setupViewPager(ViewPager viewPager) {
         AdapterPager adapter = new AdapterPager(getSupportFragmentManager());
         adapter.addFragment(FragmentFaculties.newInstance(), "Fakulteti");
-        adapter.addFragment(FragmentNews.newInstance(), "Novosti");
+        adapter.addFragment(FragmentNews.newInstance(null), "Novosti");
         adapter.addFragment(FragmentWebView.newInstance(Constants.BASE_URL + "tweets.html"), "TWITTER");
         viewPager.setAdapter(adapter);
     }
@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("only_faculties", true);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -116,19 +119,19 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 if (id == R.id.nav_university) {
                     Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                    intent.putExtra("institution_id", "1");
+                    intent.putExtra("institution_id", Constants.REMOTE_ID_SVEUCILISTE);
                     startActivity(intent);
                 } else if (id == R.id.nav_choir) {
                     Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                    intent.putExtra("institution_id", "2");
+                    intent.putExtra("institution_id", Constants.REMOTE_ID_ZBOR);
                     startActivity(intent);
                 } else if (id == R.id.nav_center) {
                     Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                    intent.putExtra("institution_id", "3");
+                    intent.putExtra("institution_id", Constants.REMOTE_ID_CENTAR);
                     startActivity(intent);
                 } else if (id == R.id.nav_service) {
                     Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                    intent.putExtra("institution_id", "4");
+                    intent.putExtra("institution_id", Constants.REMOTE_ID_SERVIS);
                     startActivity(intent);
                 } else if (id == R.id.nav_rector) {
                     Intent intent = new Intent(MainActivity.this, RectorActivity.class);

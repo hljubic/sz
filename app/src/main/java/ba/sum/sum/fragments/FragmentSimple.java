@@ -50,12 +50,16 @@ public class FragmentSimple extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         if (getArguments().getBoolean(ARG_STUDIES)) {
-            AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildrenSectioned());
-            recyclerView.setAdapter(mAdapter);
+            try {
+                AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildrenSectioned());
+                recyclerView.setAdapter(mAdapter);
+            } catch (Exception e) {
+                AdapterListSectioned mAdapter = new AdapterListSectioned(getActivity(), institution.getChildren());
+                recyclerView.setAdapter(mAdapter);
+            }
         } else {
-            AdapterDocument mAdapterDocument = new AdapterDocument(getActivity(), institution.getDocuments());
-            recyclerView.setAdapter(mAdapterDocument);
+            AdapterDocument mAdapter = new AdapterDocument(getActivity(), institution.getDocuments());
+            recyclerView.setAdapter(mAdapter);
         }
-
     }
 }

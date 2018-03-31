@@ -18,11 +18,12 @@ import ba.sum.sum.utils.Constants;
 
 @InFile("institutions.json")
 public class Institution extends JsonTable<Institution> {
-    private static final String TYPE_UNDERGRADUATE = "undergraduate";
-    private static final String TYPE_GRADUATE = "graduate";
-    private static final String TYPE_POSTGRADUATE = "postgraduate";
-    private static final String TYPE_EXPERT = "expert";
-    private static final String TYPE_OTHER = "other";
+    private static final String TYPE_UNDERGRADUATE = "Preddiplomski studij";
+    private static final String TYPE_GRADUATE = "Diplomski studij";
+    private static final String TYPE_POSTGRADUATE = "Postdiplomski studij";
+    private static final String TYPE_EXPERT = "Stručni studij";
+    private static final String TYPE_OTHER = "Ostalo";
+
     public String name;
     private String logo;
     private String address;
@@ -55,7 +56,7 @@ public class Institution extends JsonTable<Institution> {
 
     @NonNull
     public static Institution findParentOrChildById(String id) {
-        List<Institution> institutions = App.get().getInstitutions();//(Institution.class);
+        List<Institution> institutions = App.get().getInstitutions();
 
         for (Institution institution : institutions) {
             if (institution.getId().equals(id)) {

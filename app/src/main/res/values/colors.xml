@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#094877</color>
+    <color name="colorPrimaryLight">#8cafc9</color>
     <color name="colorPrimaryDark">#022645</color>
     <color name="colorAccent">#ed1c24</color>
 
@@ -9,6 +10,7 @@
     <color name="overlay_dark_30">#4D000000</color>
     <color name="overlay_dark_40">#66000000</color>
 
+    <color name="white">#FFFFFF</color>
     <color name="grey_3">#f7f7f7</color>
     <color name="grey_5">#f2f2f2</color>
     <color name="grey_10">#e6e6e6</color>

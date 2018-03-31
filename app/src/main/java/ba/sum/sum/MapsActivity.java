@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -141,6 +142,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Integer.valueOf(marker.getSnippet())).getId());
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(MapsActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

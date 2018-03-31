@@ -45,6 +45,9 @@
         <activity
             android:name=".PostActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>

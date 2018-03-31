@@ -1,5 +1,6 @@
 package ba.sum.sum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -78,8 +79,9 @@ public class RectorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
-        } else {
-            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(RectorActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

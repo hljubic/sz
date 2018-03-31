@@ -31,21 +31,24 @@ import ba.sum.sum.utils.Constants;
  * Created by hrvoje on 04/03/2018.
  */
 public class FragmentNews extends Fragment {
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_INSTITUTION_ID = "institution_id";
 
-    private RecyclerView recyclerView;
     private ArrayList<Post> posts;
     private AdapterNews mAdapter;
 
-    public static FragmentNews newInstance() {
-        return new FragmentNews();
+    public static FragmentNews newInstance(String institutionId) {
+        FragmentNews fragment = new FragmentNews();
+        Bundle args = new Bundle();
+        args.putString(ARG_INSTITUTION_ID, institutionId);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
 
-        recyclerView = rootView.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         posts = new ArrayList<>();
@@ -65,14 +68,17 @@ public class FragmentNews extends Fragment {
             }
         });
 
-        getData();
+
+        String institutionId = getArguments().getString(ARG_INSTITUTION_ID);
+
+        getData(institutionId == null ? "" : "/" + institutionId);
 
         return rootView;
     }
 
-    public void getData() {
+    public void getData(String filterId) {
 
-        StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "novosti", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, Constants.BASE_API_URL + "novosti" + filterId, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 ArrayList<Post> list = new Gson().fromJson(response, new TypeToken<List<Post>>() {

@@ -34,13 +34,13 @@
                 android:icon="@drawable/ic_map"
                 android:title="Zanimljive lokacije" />
             <item
-                android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_email"
-                android:title="Kontakt" />
-            <item
                 android:id="@+id/nav_faq"
                 android:icon="@drawable/ic_question"
                 android:title="Česta pitanja" />
+            <item
+                android:id="@+id/nav_contact"
+                android:icon="@drawable/ic_email"
+                android:title="Kontakt" />
             <item
                 android:id="@+id/nav_iss"
                 android:icon="@drawable/ic_web_black_24dp"

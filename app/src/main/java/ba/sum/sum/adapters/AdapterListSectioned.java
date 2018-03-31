@@ -80,7 +80,7 @@ public class AdapterListSectioned extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items == null ? 0 : items.size();
     }
 
     @Override
